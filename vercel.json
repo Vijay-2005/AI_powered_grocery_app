@@ -2,6 +2,7 @@
   "version": 2,
   "routes": [
     { "handle": "filesystem" },
+    { "src": "/api/(.*)", "dest": "/api/$1" },
     { "src": "/.*", "dest": "/index.html" }
   ],
   "builds": [
@@ -12,6 +13,10 @@
         "buildCommand": "npm run build",
         "outputDirectory": "build"
       }
+    },
+    {
+      "src": "api/*.py",
+      "use": "@vercel/python"
     }
   ]
 } 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import { ThemeProvider, CssBaseline, alpha } from '@mui/material';
+import { ThemeProvider, CssBaseline, alpha, GlobalStyles } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { AuthProvider } from './contexts/AuthContext';
 import { CartProvider } from './contexts/CartContext';
@@ -8,6 +8,7 @@ import { SignIn } from './components/SignIn';
 import { SignUp } from './components/SignUp';
 import { Cart } from './components/Cart';
 import { Home } from './components/Home';
+import { AICart } from './components/AICart';
 import { Box, AppBar, Toolbar, Typography, Button, Badge, IconButton, Avatar, Menu, MenuItem, Tooltip, Fade, Paper } from '@mui/material';
 import { 
   ShoppingCart as ShoppingCartIcon, 
@@ -17,13 +18,13 @@ import {
   Category as CategoryIcon,
   LocalOffer as LocalOfferIcon,
   ContactSupport as ContactSupportIcon,
-  Store as StoreIcon
+  Store as StoreIcon,
+  SmartToy as AIIcon
 } from '@mui/icons-material';
 import { useAuth } from './contexts/AuthContext';
 import { useCart } from './contexts/CartContext';
 import { TextField } from '@mui/material';
 import { OrderSuccess } from './components/OrderSuccess';
-import { Footer } from './components/Footer';
 
 const theme = createTheme({
   palette: {
@@ -257,6 +258,45 @@ const Navigation: React.FC = () => {
             <NavButton to="/categories" icon={<CategoryIcon />} label="Categories" />
             <NavButton to="/offers" icon={<LocalOfferIcon />} label="Offers" />
             <NavButton to="/contact" icon={<ContactSupportIcon />} label="Contact" />
+            <Button 
+              color="primary" 
+              variant="contained"
+              onClick={() => navigate('/ai-cart')}
+              startIcon={<AIIcon sx={{ animation: 'pulse 1.5s infinite' }} />}
+              sx={{ 
+                position: 'relative',
+                fontWeight: 600,
+                borderRadius: 2,
+                ml: 1,
+                px: 2,
+                py: 1,
+                backgroundColor: 'secondary.main',
+                color: 'white',
+                boxShadow: '0 4px 12px rgba(255, 152, 0, 0.3)',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-3px)',
+                  boxShadow: '0 6px 15px rgba(255, 152, 0, 0.4)',
+                  backgroundColor: 'secondary.dark',
+                },
+                '&:active': {
+                  transform: 'translateY(-1px)',
+                },
+                '&::after': {
+                  content: '""',
+                  position: 'absolute',
+                  top: -4,
+                  right: -4,
+                  width: 8,
+                  height: 8,
+                  borderRadius: '50%',
+                  backgroundColor: 'error.main',
+                  animation: 'pulse 1.5s infinite',
+                }
+              }}
+            >
+              AI Cart
+            </Button>
           </Box>
 
           {/* Search Bar */}
@@ -299,6 +339,38 @@ const Navigation: React.FC = () => {
 
           {/* Right Side Icons */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            {/* Mobile-only AI Cart Button */}
+            <Tooltip title="AI Recipe Cart" arrow>
+              <IconButton 
+                color="secondary"
+                onClick={() => navigate('/ai-cart')}
+                sx={{ 
+                  display: { xs: 'flex', md: 'none' },
+                  position: 'relative',
+                  transition: 'all 0.3s ease',
+                  bgcolor: 'secondary.main',
+                  color: 'white',
+                  '&:hover': {
+                    bgcolor: 'secondary.dark',
+                    transform: 'scale(1.1)'
+                  },
+                  '&::after': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    width: 8,
+                    height: 8,
+                    borderRadius: '50%',
+                    backgroundColor: 'error.main',
+                    animation: 'pulse 1.5s infinite',
+                  }
+                }}
+              >
+                <AIIcon />
+              </IconButton>
+            </Tooltip>
+            
             {currentUser ? (
               <>
                 <Tooltip title="Wishlist" arrow>
@@ -452,10 +524,50 @@ const Navigation: React.FC = () => {
   );
 };
 
+// Temporary placeholder Footer component
+const Footer = () => (
+  <Box
+    component="footer"
+    sx={{
+      py: 3,
+      px: 2,
+      mt: 'auto',
+      backgroundColor: 'white',
+      borderTop: '1px solid',
+      borderColor: 'divider',
+      textAlign: 'center'
+    }}
+  >
+    <Typography variant="body2" color="text.secondary">
+      © {new Date().getFullYear()} Fresh Cart. All rights reserved.
+    </Typography>
+  </Box>
+);
+
 const App: React.FC = () => {
+  // Define the global styles for animations
+  const globalStyles = (
+    <GlobalStyles 
+      styles={{
+        '@keyframes pulse': {
+          '0%': {
+            boxShadow: '0 0 0 0 rgba(255, 152, 0, 0.7)'
+          },
+          '70%': {
+            boxShadow: '0 0 0 6px rgba(255, 152, 0, 0)'
+          },
+          '100%': {
+            boxShadow: '0 0 0 0 rgba(255, 152, 0, 0)'
+          }
+        }
+      }}
+    />
+  );
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      {globalStyles}
       <Router>
         <AuthProvider>
           <CartProvider>
@@ -468,32 +580,12 @@ const App: React.FC = () => {
               <Navigation />
               <Box component="main" sx={{ flexGrow: 1 }}>
                 <Routes>
+                  <Route path="/" element={<Home />} />
                   <Route path="/signin" element={<SignIn />} />
                   <Route path="/signup" element={<SignUp />} />
-                  <Route
-                    path="/"
-                    element={
-                      <PrivateRoute>
-                        <Home />
-                      </PrivateRoute>
-                    }
-                  />
-                  <Route
-                    path="/cart"
-                    element={
-                      <PrivateRoute>
-                        <Cart />
-                      </PrivateRoute>
-                    }
-                  />
-                  <Route
-                    path="/order-success"
-                    element={
-                      <PrivateRoute>
-                        <OrderSuccess />
-                      </PrivateRoute>
-                    }
-                  />
+                  <Route path="/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
+                  <Route path="/ai-cart" element={<PrivateRoute><AICart /></PrivateRoute>} />
+                  <Route path="/order-success" element={<PrivateRoute><OrderSuccess /></PrivateRoute>} />
                 </Routes>
               </Box>
               <Footer />
