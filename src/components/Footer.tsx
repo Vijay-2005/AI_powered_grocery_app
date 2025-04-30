@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Container, Typography, Link, IconButton, Divider } from '@mui/material';
-import Grid from '@mui/material/Grid';
 import { 
   Facebook as FacebookIcon,
   Twitter as TwitterIcon,

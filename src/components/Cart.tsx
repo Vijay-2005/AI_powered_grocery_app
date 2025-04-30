@@ -11,8 +11,6 @@ import {
   Paper,
   Avatar,
   Chip,
-  useTheme,
-  useMediaQuery
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -27,8 +25,6 @@ import { Payment } from './Payment';
 
 export const Cart: React.FC = () => {
   const { state: { items }, dispatch } = useCart();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleUpdateQuantity = (id: string, change: number) => {
     dispatch({

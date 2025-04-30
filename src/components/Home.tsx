@@ -5,27 +5,20 @@ import {
   Typography,
   TextField,
   InputAdornment,
-  Divider,
-  useTheme,
-  useMediaQuery,
   Paper,
   Button,
-  Grid,
   Chip
 } from '@mui/material';
 import { 
   Search as SearchIcon,
-  FilterList as FilterListIcon,
   LocalMall as LocalMallIcon 
 } from '@mui/icons-material';
 import { ProductCard } from './ProductCard';
-import { CategoryCard } from './CategoryCard';
 import { products, categories } from '../data/products';
 
 export const Home: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const theme = useTheme();
 
   const filteredProducts = products.filter(product => {
     const matchesCategory = !selectedCategory || product.category === selectedCategory;
