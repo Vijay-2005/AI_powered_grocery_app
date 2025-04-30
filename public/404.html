@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page Not Found - Fresh Cart</title>
+  <style>
+    body {
+      font-family: 'Poppins', 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+    .container {
+      text-align: center;
+      padding: 2rem;
+      max-width: 600px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #2e7d32;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    .error-code {
+      font-size: 1.5rem;
+      color: #ff9800;
+      margin-bottom: 2rem;
+    }
+    .btn {
+      display: inline-block;
+      background-color: #2e7d32;
+      color: white;
+      padding: 0.8rem 1.8rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      background-color: #1b5e20;
+      transform: translateY(-2px);
+    }
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #2e7d32;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">Fresh Cart</div>
+    <h1>Oops!</h1>
+    <div class="error-code">404 - Page Not Found</div>
+    <p>
+      The page you are looking for might have been removed, had its name changed, 
+      or is temporarily unavailable.
+    </p>
+    <a href="/" class="btn">Back to Home</a>
+  </div>
+  <script>
+    // This script redirects all 404 errors back to the index.html for the React Router to handle
+    // This is useful for client-side routing
+    window.onload = function() {
+      // Check if this is a direct entry to 404.html (not a redirect)
+      if (window.location.pathname === '/404.html') {
+        // Redirect to home page after a short delay
+        setTimeout(function() {
+          window.location.href = '/';
+        }, 3000);
+      }
+    };
+  </script>
+</body>
+</html> 
