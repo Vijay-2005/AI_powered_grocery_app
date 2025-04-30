@@ -4,6 +4,7 @@ import { ThemeProvider, CssBaseline, alpha, GlobalStyles, Container, Grid as Mui
 import { createTheme } from '@mui/material/styles';
 import { AuthProvider } from './contexts/AuthContext';
 import { CartProvider } from './contexts/CartContext';
+import { OrderProvider } from './contexts/OrderContext';
 import { SignIn } from './components/SignIn';
 import { SignUp } from './components/SignUp';
 import { Cart } from './components/Cart';
@@ -28,6 +29,7 @@ import { useAuth } from './contexts/AuthContext';
 import { useCart } from './contexts/CartContext';
 import { TextField } from '@mui/material';
 import { OrderSuccess } from './components/OrderSuccess';
+import { Orders } from './components/Orders';
 
 // Helper component to fix Grid typing issues with MUI v5
 const Grid = (props: any) => <MuiGrid {...props} />;
@@ -649,6 +651,10 @@ const Footer = () => {
   );
 };
 
+// Memoize the Navigation and Footer components
+const MemoizedNavigation = React.memo(Navigation);
+const MemoizedFooter = React.memo(Footer);
+
 const App: React.FC = () => {
   // Define the global styles for animations
   const globalStyles = (
@@ -676,25 +682,28 @@ const App: React.FC = () => {
       <Router>
         <AuthProvider>
           <CartProvider>
-            <Box sx={{ 
-              display: 'flex', 
-              flexDirection: 'column', 
-              minHeight: '100vh',
-              bgcolor: '#f5f5f5'
-            }}>
-              <Navigation />
-              <Box component="main" sx={{ flexGrow: 1 }}>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/signin" element={<SignIn />} />
-                  <Route path="/signup" element={<SignUp />} />
-                  <Route path="/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
-                  <Route path="/ai-cart" element={<PrivateRoute><AICart /></PrivateRoute>} />
-                  <Route path="/order-success" element={<PrivateRoute><OrderSuccess /></PrivateRoute>} />
-                </Routes>
+            <OrderProvider>
+              <Box sx={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                minHeight: '100vh',
+                bgcolor: '#f5f5f5'
+              }}>
+                <MemoizedNavigation />
+                <Box component="main" sx={{ flexGrow: 1 }}>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/signin" element={<SignIn />} />
+                    <Route path="/signup" element={<SignUp />} />
+                    <Route path="/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
+                    <Route path="/ai-cart" element={<PrivateRoute><AICart /></PrivateRoute>} />
+                    <Route path="/order-success" element={<PrivateRoute><OrderSuccess /></PrivateRoute>} />
+                    <Route path="/orders" element={<PrivateRoute><Orders /></PrivateRoute>} />
+                  </Routes>
+                </Box>
+                <MemoizedFooter />
               </Box>
-              <Footer />
-            </Box>
+            </OrderProvider>
           </CartProvider>
         </AuthProvider>
       </Router>
