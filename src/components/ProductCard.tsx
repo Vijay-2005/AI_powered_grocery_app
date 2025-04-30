@@ -9,7 +9,9 @@ import {
   IconButton,
   Chip,
   Skeleton,
-  Rating
+  Rating,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
 import { 
   AddShoppingCart as AddShoppingCartIcon, 
@@ -34,6 +36,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { dispatch } = useCart();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [favorite, setFavorite] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isExtraSmall = useMediaQuery('(max-width:400px)');
 
   const handleAddToCart = () => {
     dispatch({
@@ -51,10 +56,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         flexDirection: 'column',
         boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
         transition: 'all 0.3s ease',
-        borderRadius: 3,
+        borderRadius: isMobile ? 2 : 3,
         '&:hover': {
-          transform: 'translateY(-5px)',
-          boxShadow: '0 8px 16px rgba(0,0,0,0.1)',
+          transform: isMobile ? 'none' : 'translateY(-5px)',
+          boxShadow: isMobile ? '0 4px 8px rgba(0,0,0,0.1)' : '0 8px 16px rgba(0,0,0,0.1)',
         },
         position: 'relative',
         overflow: 'hidden'
@@ -64,7 +69,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {!imageLoaded && (
           <Skeleton 
             variant="rectangular" 
-            height={160} 
+            height={isMobile ? 140 : 160} 
             width="100%" 
             animation="wave"
             sx={{ bgcolor: 'rgba(0,0,0,0.05)' }}
@@ -72,36 +77,37 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         )}
         <CardMedia
           component="img"
-          height="160"
+          height={isMobile ? 140 : 160}
           image={product.image}
           alt={product.name}
           onLoad={() => setImageLoaded(true)}
           sx={{ 
             objectFit: 'cover',
             display: imageLoaded ? 'block' : 'none',
-            borderTopRightRadius: 12,
-            borderTopLeftRadius: 12,
+            borderTopRightRadius: isMobile ? 8 : 12,
+            borderTopLeftRadius: isMobile ? 8 : 12,
           }}
         />
         <IconButton 
           sx={{ 
             position: 'absolute', 
-            top: 8, 
-            right: 8,
+            top: 6, 
+            right: 6,
             backgroundColor: 'white',
             boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
             '&:hover': {
               backgroundColor: 'rgba(255,255,255,0.8)',
             },
-            width: 30,
-            height: 30
+            width: isExtraSmall ? 24 : 30,
+            height: isExtraSmall ? 24 : 30,
+            padding: isExtraSmall ? 0.5 : 0
           }}
           onClick={() => setFavorite(!favorite)}
           size="small"
         >
           {favorite ? 
-            <FavoriteIcon sx={{ color: '#e91e63', fontSize: '1rem' }} /> : 
-            <FavoriteBorderIcon sx={{ fontSize: '1rem' }} />
+            <FavoriteIcon sx={{ color: '#e91e63', fontSize: isExtraSmall ? '0.8rem' : '1rem' }} /> : 
+            <FavoriteBorderIcon sx={{ fontSize: isExtraSmall ? '0.8rem' : '1rem' }} />
           }
         </IconButton>
         {product.category && (
@@ -110,36 +116,63 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             size="small"
             sx={{ 
               position: 'absolute', 
-              top: 8, 
-              left: 8,
+              top: 6, 
+              left: 6,
               backgroundColor: 'rgba(46, 125, 50, 0.85)',
               color: 'white',
               fontWeight: 'bold',
-              fontSize: '0.6rem',
-              height: 20,
+              fontSize: isExtraSmall ? '0.5rem' : '0.6rem',
+              height: isExtraSmall ? 16 : 20,
               '& .MuiChip-label': {
-                px: 1
+                px: isExtraSmall ? 0.5 : 1
               }
             }}
           />
         )}
       </Box>
       
-      <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', p: 1.5, pb: 1.5 }}>
-        <Typography gutterBottom variant="subtitle1" component="div" fontWeight="bold" sx={{ mb: 0.5, lineHeight: 1.2 }}>
+      <CardContent sx={{ 
+        flexGrow: 1, 
+        display: 'flex', 
+        flexDirection: 'column', 
+        p: isExtraSmall ? 1 : (isMobile ? 1.2 : 1.5), 
+        pb: isExtraSmall ? 1 : (isMobile ? 1.2 : 1.5),
+        '&:last-child': { pb: isExtraSmall ? 1 : (isMobile ? 1.2 : 1.5) }
+      }}>
+        <Typography 
+          gutterBottom 
+          variant={isExtraSmall ? "body2" : (isMobile ? "body1" : "subtitle1")} 
+          component="div" 
+          fontWeight="bold" 
+          sx={{ 
+            mb: 0.5, 
+            lineHeight: 1.2,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: 1,
+            WebkitBoxOrient: 'vertical'
+          }}
+        >
           {product.name}
         </Typography>
         
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-          <Rating value={4} size="small" readOnly precision={0.5} />
-          <Typography variant="body2" color="text.secondary" sx={{ ml: 0.5, fontSize: '0.75rem' }}>
+          <Rating 
+            value={4} 
+            size={isExtraSmall ? "small" : "small"} 
+            readOnly 
+            precision={0.5}
+            sx={{ '& .MuiRating-icon': { fontSize: isExtraSmall ? '0.8rem' : '1rem' } }} 
+          />
+          <Typography variant="body2" color="text.secondary" sx={{ ml: 0.5, fontSize: isExtraSmall ? '0.65rem' : '0.75rem' }}>
             (4.0)
           </Typography>
         </Box>
         
         <Typography variant="body2" color="text.secondary" sx={{ 
           mb: 1, 
-          fontSize: '0.75rem',
+          fontSize: isExtraSmall ? '0.65rem' : '0.75rem',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           display: '-webkit-box',
@@ -152,10 +185,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         
         <Box sx={{ mt: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Box>
-            <Typography variant="h6" color="primary" fontWeight="bold" sx={{ fontSize: '1.1rem' }}>
+            <Typography variant={isExtraSmall ? "body1" : "h6"} color="primary" fontWeight="bold" sx={{ fontSize: isExtraSmall ? '0.9rem' : '1.1rem' }}>
               ₹{product.price.toFixed(2)}
             </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
+            <Typography variant="body2" color="text.secondary" sx={{ fontSize: isExtraSmall ? '0.6rem' : '0.7rem' }}>
               per {product.unit}
             </Typography>
           </Box>
@@ -164,18 +197,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             variant="contained"
             color="primary"
             onClick={handleAddToCart}
-            startIcon={<AddShoppingCartIcon fontSize="small" />}
+            startIcon={isExtraSmall ? null : <AddShoppingCartIcon fontSize="small" />}
             size="small"
             sx={{ 
               borderRadius: 2,
               boxShadow: 'none',
-              py: 0.5,
+              py: isExtraSmall ? 0.3 : 0.5,
+              px: isExtraSmall ? 1 : 1.5,
+              minWidth: isExtraSmall ? '50px' : 'auto',
               '&:hover': {
                 boxShadow: '0 2px 8px rgba(46, 125, 50, 0.3)',
               }
             }}
           >
-            Add
+            {isExtraSmall ? <AddShoppingCartIcon fontSize="small" /> : "Add"}
           </Button>
         </Box>
       </CardContent>

@@ -269,22 +269,22 @@ export const Home: React.FC = () => {
         </Box>
         
         {/* Category Cards - Visual Display */}
-        <Grid container spacing={3} sx={{ mb: 5 }}>
+        <Grid container spacing={2} sx={{ mb: 4 }}>
           {categories.map((category) => (
             <Grid item xs={6} sm={4} md={3} lg={2} key={category.id}>
               <Paper
                 sx={{
                   position: 'relative',
-                  height: 140,
+                  height: { xs: 100, sm: 120, md: 140 },
                   width: '100%',
-                  borderRadius: 2,
+                  borderRadius: { xs: 1.5, sm: 2 },
                   overflow: 'hidden',
                   cursor: 'pointer',
                   transition: 'all 0.3s ease',
                   boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
                   '&:hover': {
-                    transform: 'translateY(-4px)',
-                    boxShadow: '0 8px 16px rgba(0,0,0,0.1)'
+                    transform: { xs: 'none', sm: 'translateY(-4px)' },
+                    boxShadow: { xs: '0 4px 8px rgba(0,0,0,0.1)', sm: '0 8px 16px rgba(0,0,0,0.1)' }
                   }
                 }}
                 onClick={() => setSelectedCategory(category.id === selectedCategory ? null : category.id)}
@@ -307,18 +307,26 @@ export const Home: React.FC = () => {
                     width: '100%',
                     backgroundColor: 'rgba(0,0,0,0.6)',
                     color: 'white',
-                    p: 1.5
+                    p: { xs: 1, sm: 1.5 }
                   }}
                 >
-                  <Typography variant="subtitle1" fontWeight="bold">{category.name}</Typography>
+                  <Typography 
+                    variant="body2" 
+                    fontWeight="bold" 
+                    sx={{ 
+                      fontSize: { xs: '0.75rem', sm: '0.85rem', md: '1rem' }
+                    }}
+                  >
+                    {category.name}
+                  </Typography>
                 </Box>
               </Paper>
             </Grid>
           ))}
         </Grid>
         
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-          <Typography variant="h5" fontWeight="bold">
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, flexWrap: 'wrap' }}>
+          <Typography variant="h5" fontWeight="bold" sx={{ fontSize: { xs: '1.2rem', sm: '1.5rem' }, mb: { xs: 1, sm: 0 } }}>
             {selectedCategory 
               ? categories.find(c => c.id === selectedCategory)?.name 
               : searchQuery ? 'Search Results' : 'All Products'}
@@ -330,7 +338,7 @@ export const Home: React.FC = () => {
 
         <Box sx={{ 
           display: 'grid',
-          gap: { xs: 2, sm: 3 },
+          gap: { xs: 1.5, sm: 2, md: 3 },
           gridTemplateColumns: {
             xs: 'repeat(2, 1fr)',
             sm: 'repeat(3, 1fr)',
@@ -371,23 +379,41 @@ export const Home: React.FC = () => {
         </Box>
         
         {/* Customer Testimonials Section */}
-        <Box sx={{ mt: 8, mb: 4 }}>
-          <Typography variant="h5" fontWeight="bold" textAlign="center" sx={{ mb: 1 }}>
+        <Box sx={{ mt: { xs: 6, md: 8 }, mb: 4 }}>
+          <Typography 
+            variant="h5" 
+            fontWeight="bold" 
+            textAlign="center" 
+            sx={{ 
+              mb: 1,
+              fontSize: { xs: '1.2rem', sm: '1.5rem' }
+            }}
+          >
             What Our Customers Say
           </Typography>
-          <Typography variant="body1" color="text.secondary" textAlign="center" sx={{ mb: 5, maxWidth: 700, mx: 'auto' }}>
+          <Typography 
+            variant="body1" 
+            color="text.secondary" 
+            textAlign="center" 
+            sx={{ 
+              mb: { xs: 3, md: 5 },
+              maxWidth: 700, 
+              mx: 'auto',
+              fontSize: { xs: '0.875rem', sm: '1rem' }
+            }}
+          >
             Join thousands of satisfied customers who enjoy fresh groceries delivered to their doorstep
           </Typography>
           
-          <Grid container spacing={3}>
+          <Grid container spacing={2}>
             {testimonials.map((testimonial, index) => (
-              <Grid item xs={12} md={4} key={index}>
+              <Grid item xs={12} sm={6} md={4} key={index}>
                 <Paper sx={{ 
-                  p: 3, 
+                  p: { xs: 2, sm: 3 }, 
                   height: '100%', 
                   display: 'flex', 
                   flexDirection: 'column',
-                  borderRadius: 3,
+                  borderRadius: { xs: 2, sm: 3 },
                   boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
                   position: 'relative',
                   overflow: 'visible',
@@ -396,37 +422,44 @@ export const Home: React.FC = () => {
                     position: 'absolute',
                     top: -15,
                     left: 20,
-                    width: 30,
-                    height: 30,
+                    width: { xs: 25, sm: 30 },
+                    height: { xs: 25, sm: 30 },
                     borderRadius: '50%',
                     bgcolor: 'secondary.main',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     color: 'white',
-                    fontSize: 24,
+                    fontSize: { xs: 20, sm: 24 },
                     fontWeight: 'bold',
                     zIndex: 1
                   }
                 }}>
                   <Typography 
                     sx={{ 
-                      fontSize: '3rem', 
+                      fontSize: { xs: '2.5rem', sm: '3rem' }, 
                       color: 'secondary.light', 
                       lineHeight: 1,
-                      mb: 2
+                      mb: { xs: 1, sm: 2 }
                     }}
                   >
                     "
                   </Typography>
-                  <Typography variant="body1" sx={{ mb: 3, flexGrow: 1 }}>
+                  <Typography 
+                    variant="body1" 
+                    sx={{ 
+                      mb: { xs: 2, sm: 3 }, 
+                      flexGrow: 1,
+                      fontSize: { xs: '0.85rem', sm: '1rem' }
+                    }}
+                  >
                     {testimonial.content}
                   </Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <Box
                       sx={{
-                        width: 50,
-                        height: 50,
+                        width: { xs: 40, sm: 50 },
+                        height: { xs: 40, sm: 50 },
                         borderRadius: '50%',
                         overflow: 'hidden',
                         mr: 2,
@@ -440,10 +473,18 @@ export const Home: React.FC = () => {
                       />
                     </Box>
                     <Box>
-                      <Typography variant="subtitle1" fontWeight="bold">
+                      <Typography 
+                        variant="subtitle1" 
+                        fontWeight="bold"
+                        sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}
+                      >
                         {testimonial.name}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
+                      <Typography 
+                        variant="body2" 
+                        color="text.secondary"
+                        sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+                      >
                         {testimonial.location}
                       </Typography>
                     </Box>

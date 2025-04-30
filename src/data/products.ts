@@ -132,7 +132,7 @@ export const products = [
     id: 'd2',
     name: 'Eggs',
     price: 70,
-    image: 'https://images.unsplash.com/photo-1607690424560-55c1a5488c85?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+    image: 'https://images.unsplash.com/photo-1559738928-5d5dc5c2458d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGVnZ3N8ZW58MHx8MHx8fDA%3D',
     category: 'dairy',
     description: 'Farm fresh eggs.',
     unit: 'dozen'
