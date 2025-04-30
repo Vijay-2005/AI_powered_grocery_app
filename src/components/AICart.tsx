@@ -147,8 +147,8 @@ export const AICart: React.FC = () => {
   };
 
   const getIngredientImageUrl = (ingredient: string) => {
-    const sanitized = encodeURIComponent(ingredient.toLowerCase().trim());
-    return `https://source.unsplash.com/100x100/?${sanitized},food`;
+    // Using a single reliable default image for all AI-generated ingredients
+    return 'https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80';
   };
 
   return (
