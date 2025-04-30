@@ -1,6 +1,6 @@
 import os
 import json
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import google.generativeai as genai
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -10,7 +10,7 @@ load_dotenv()
 
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app, resources={r"/*": {"origins": "*"}})  # Enable CORS for all routes with all origins
 
 # Configure Gemini API
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', 'AIzaSyBAtmmFhg7XjMCozgh_6paz-nBN-IUgXAQ')
@@ -31,8 +31,18 @@ except Exception as e:
 @app.route('/api/get-ingredients', methods=['POST'])
 def get_ingredients():
     try:
+        print("==== API Request Received ====")
+        print(f"Headers: {request.headers}")
+        
         data = request.get_json()
+        if not data:
+            print("No JSON data received!")
+            print(f"Request data: {request.data}")
+            return jsonify({'error': 'No JSON data received', 'ingredients': []}), 400
+            
         user_input = data.get('recipe', '')
+        
+        print(f"Received request for recipe: {user_input}")
         
         if not user_input:
             return jsonify({'error': 'No recipe provided', 'ingredients': []}), 400
@@ -48,7 +58,10 @@ def get_ingredients():
         prompt = f"List all the ingredients needed to make {user_input}. Respond with a simple comma-separated list only. No extra text."
         
         try:
+            print(f"Sending prompt to Gemini: {prompt}")
             response = model.generate_content(prompt)
+            print(f"Gemini response: {response.text}")
+            
             ingredients = [item.strip() for item in response.text.split(',') if item.strip()]
             
             print(f"Successfully processed request for: {user_input}")
@@ -75,20 +88,17 @@ def get_ingredients():
             'success': False
         }), 500
 
+# Serve test.html for API testing
+@app.route('/test.html')
+def serve_test_html():
+    return send_from_directory('.', 'test.html')
+
 # Add a simple health check endpoint
 @app.route('/api/health', methods=['GET'])
 def health_check():
     return jsonify({
         'status': 'ok',
         'gemini_configured': model is not None and GEMINI_API_KEY is not None
-    })
-
-# Root route to confirm API is running
-@app.route('/')
-def index():
-    return jsonify({
-        'status': 'ok',
-        'message': 'Gemini API server is running. Use /api/get-ingredients to get recipe ingredients.'
     })
 
 # For local development

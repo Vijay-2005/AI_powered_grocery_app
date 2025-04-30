@@ -11,12 +11,16 @@
       "use": "@vercel/static-build",
       "config": {
         "buildCommand": "npm run build",
-        "outputDirectory": "build"
+        "outputDirectory": "build",
+        "distDir": "build"
       }
     },
     {
       "src": "api/*.py",
       "use": "@vercel/python"
     }
-  ]
+  ],
+  "env": {
+    "CI": "false"
+  }
 } 

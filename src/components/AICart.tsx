@@ -12,7 +12,8 @@ import {
   CardMedia,
   IconButton,
   Divider,
-  InputAdornment
+  InputAdornment,
+  Tooltip
 } from '@mui/material';
 import {
   Search as SearchIcon,
@@ -25,6 +26,7 @@ import {
   Lightbulb as LightbulbIcon
 } from '@mui/icons-material';
 import { useCart } from '../contexts/CartContext';
+import { getRecipeIngredients } from '../services/geminiService';
 
 export const AICart: React.FC = () => {
   const [recipeInput, setRecipeInput] = useState('');
@@ -46,19 +48,16 @@ export const AICart: React.FC = () => {
     setRecipeDescription(`Getting ingredients for ${recipeInput}...`);
     
     try {
-      // Call the API endpoint
-      const response = await fetch('/api/get-ingredients', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ recipe: recipeInput })
-      });
+      console.log("Calling Gemini API for recipe:", recipeInput);
       
-      const data = await response.json();
+      // Use our geminiService to get ingredients directly from Google's API
+      const ingredients = await getRecipeIngredients(recipeInput);
       
-      if (data.success && data.ingredients && data.ingredients.length > 0) {
-        setIngredients(data.ingredients);
+      if (ingredients && ingredients.length > 0) {
+        setIngredients(ingredients);
         setRecipeDescription(`${recipeInput} requires the following ingredients:`);
       } else {
+        console.warn("API returned no ingredients");
         // If no ingredients were found, use fallback mock data
         const mockIngredients = generateMockIngredients(recipeInput);
         setIngredients(mockIngredients);
@@ -335,6 +334,23 @@ export const AICart: React.FC = () => {
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                 <Typography variant="h6">
                   Ingredients <Chip label={ingredients.length} color="primary" size="small" />
+                  {recipeDescription.includes('generated locally') && (
+                    <Chip 
+                      label="Local Fallback" 
+                      color="warning" 
+                      size="small" 
+                      sx={{ ml: 1, fontSize: '0.7rem' }} 
+                    />
+                  )}
+                  {!recipeDescription.includes('generated locally') && (
+                    <Chip 
+                      label="Gemini AI" 
+                      color="secondary" 
+                      size="small" 
+                      sx={{ ml: 1, fontSize: '0.7rem' }} 
+                      icon={<AIIcon sx={{ fontSize: '0.8rem' }} />}
+                    />
+                  )}
                 </Typography>
                 
                 <Box sx={{ display: 'flex', gap: 1 }}>
@@ -398,23 +414,27 @@ export const AICart: React.FC = () => {
                       </Typography>
                       
                       <Box sx={{ display: 'flex', gap: 1 }}>
-                        <IconButton 
-                          size="small" 
-                          color="primary"
-                          onClick={() => addToCart(ingredient)}
-                          sx={{ bgcolor: 'primary.light', color: 'white', '&:hover': { bgcolor: 'primary.main' } }}
-                        >
-                          <AddIcon fontSize="small" />
-                        </IconButton>
+                        <Tooltip title="Add to cart">
+                          <IconButton 
+                            size="small" 
+                            color="primary"
+                            onClick={() => addToCart(ingredient)}
+                            sx={{ bgcolor: 'primary.light', color: 'white', '&:hover': { bgcolor: 'primary.main' } }}
+                          >
+                            <AddIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
                         
-                        <IconButton 
-                          size="small" 
-                          color="error"
-                          onClick={() => removeIngredient(index)}
-                          sx={{ bgcolor: 'error.light', color: 'white', '&:hover': { bgcolor: 'error.main' } }}
-                        >
-                          <DeleteIcon fontSize="small" />
-                        </IconButton>
+                        <Tooltip title="Remove">
+                          <IconButton 
+                            size="small" 
+                            color="error"
+                            onClick={() => removeIngredient(index)}
+                            sx={{ bgcolor: 'error.light', color: 'white', '&:hover': { bgcolor: 'error.main' } }}
+                          >
+                            <DeleteIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
                       </Box>
                     </Box>
                   </React.Fragment>

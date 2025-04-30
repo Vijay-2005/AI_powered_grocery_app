@@ -18,7 +18,7 @@ export const categories: Category[] = [
   {
     id: 'dairy',
     name: 'Dairy & Eggs',
-    image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
+    image: 'https://plus.unsplash.com/premium_photo-1726072360068-cdc3561ea615?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   },
   {
     id: 'meat',
@@ -33,7 +33,22 @@ export const categories: Category[] = [
   {
     id: 'pantry',
     name: 'Pantry',
-    image: 'https://images.unsplash.com/photo-1584473457493-83c45f9156fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
+    image: 'https://plus.unsplash.com/premium_photo-1664372599267-fb1777e96846?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGFudHJ5fGVufDB8fDB8fHww'
+  },
+  {
+    id: 'beverages',
+    name: 'Beverages',
+    image: 'https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
+  },
+  {
+    id: 'snacks',
+    name: 'Snacks',
+    image: 'https://images.unsplash.com/photo-1599490659213-e2b9527bd087?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
+  },
+  {
+    id: 'organic',
+    name: 'Organic',
+    image: 'https://images.unsplash.com/photo-1543076447-215ad9ba6923?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
   }
 ];
 
@@ -155,7 +170,7 @@ export const products = [
     id: 'b1',
     name: 'Bread',
     price: 40,
-    image: 'https://images.unsplash.com/photo-1549931319-a545dcf3bc7c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+    image: 'https://images.unsplash.com/photo-1598373182133-52452f7691ef?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8YnJlYWR8ZW58MHx8MHx8fDA%3D',
     category: 'bakery',
     description: 'Freshly baked whole wheat bread.',
     unit: 'loaf'
@@ -174,7 +189,7 @@ export const products = [
     id: 'p1',
     name: 'Rice',
     price: 90,
-    image: 'https://images.unsplash.com/photo-1586201375761-83865001e8ac?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+    image: 'https://plus.unsplash.com/premium_photo-1723726831918-9a8542e705cb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fHJpY2V8ZW58MHx8MHx8fDA%3D',
     category: 'pantry',
     description: 'Premium jasmine rice.',
     unit: 'kg'
@@ -196,5 +211,32 @@ export const products = [
     category: 'pantry',
     description: 'Extra virgin olive oil.',
     unit: 'bottle'
+  },
+  {
+    id: 'b3',
+    name: 'Almond Croissant',
+    price: 95,
+    image: 'https://images.unsplash.com/photo-1509365465985-25d11c17e812?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    category: 'bakery',
+    description: 'A rich croissant filled with almond cream',
+    unit: 'pack'
+  },
+  {
+    id: 'b4',
+    name: 'Chocolate Croissant',
+    price: 90,
+    image: 'https://images.unsplash.com/photo-1506459225024-1428097a7e18?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    category: 'bakery',
+    description: 'Flaky croissant filled with smooth dark chocolate.',
+    unit: 'pack'
+  },
+  {
+    id: 'b5',
+    name: 'Butter Croissant',
+    price: 80,
+    image: 'https://images.unsplash.com/photo-1509665653475-295f17f738e6?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    category: 'bakery',
+    description: 'Classic French butter croissant.',
+    unit: 'pack'
   }
 ]; 
