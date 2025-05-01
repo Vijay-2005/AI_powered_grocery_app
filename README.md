@@ -12,6 +12,7 @@ A modern React-based grocery shopping application with TypeScript and Firebase i
 - **UPI Payment Integration** - Secure checkout with UPI payment verification
 - **Responsive Design** - Beautiful UI that works on all devices
 - **Error Handling** - Graceful error states and loading indicators
+- **AI-Powered Recipe Suggestions** - Get ingredient lists for recipes using Gemini AI
 
 ## 🛠️ Tech Stack
 
@@ -22,6 +23,7 @@ A modern React-based grocery shopping application with TypeScript and Firebase i
 - **State Management**: Context API
 - **Styling**: Emotion (CSS-in-JS)
 - **Deployment**: Vercel
+- **AI Integration**: Google Gemini API
 
 ## 🚀 Quick Start
 
@@ -30,6 +32,7 @@ A modern React-based grocery shopping application with TypeScript and Firebase i
 - Node.js (v16 or higher)
 - npm or yarn
 - A Firebase account
+- Google Gemini API key (for recipe ingredient suggestions)
 
 ### Installation
 
@@ -45,15 +48,26 @@ A modern React-based grocery shopping application with TypeScript and Firebase i
    ```
 
 3. Set up environment variables:
-   - Copy `env.template` to `.env.local`
-   - Update the values with your Firebase credentials
+   - Copy `.env.example` to `.env`
+   - Update the values with your actual API keys and credentials:
+     - Firebase configuration
+     - Gemini API key
+     - UPI payment credentials
 
-4. Start the development server:
+4. Start the frontend development server:
    ```bash
    npm start
    ```
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+6. For the backend API (recipe suggestions):
+   ```bash
+   cd api
+   pip install -r requirements.txt
+   python recipe_ingredients.py
+   ```
+   The backend will run on [http://localhost:5000](http://localhost:5000)
 
 ## 📷 Screenshots
 

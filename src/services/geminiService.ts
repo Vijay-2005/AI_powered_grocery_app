@@ -1,10 +1,13 @@
 import axios from 'axios';
 
-// Gemini API key - In production, this should be stored in environment variables
-const GEMINI_API_KEY = 'AIzaSyBAtmmFhg7XjMCozgh_6paz-nBN-IUgXAQ';
+// Get Gemini API key from environment variables with proper REACT_APP prefix
+const GEMINI_API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
 
 // Gemini AI API endpoint
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent';
+
+// Log if API key is loaded (without exposing the actual key)
+console.log('Gemini API key loaded:', !!GEMINI_API_KEY);
 
 /**
  * Get recipe ingredients using Google's Gemini API
@@ -62,4 +65,4 @@ export const getRecipeIngredients = async (recipe: string): Promise<string[]> =>
     console.error('Error fetching ingredients from Gemini:', error);
     throw error;
   }
-}; 
+};

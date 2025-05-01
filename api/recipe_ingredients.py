@@ -13,7 +13,7 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
 # Configure Gemini API
-GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', 'AIzaSyBAtmmFhg7XjMCozgh_6paz-nBN-IUgXAQ')
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 
 if not GEMINI_API_KEY:
     print("WARNING: GEMINI_API_KEY environment variable is not set!")
@@ -95,4 +95,4 @@ def index():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     print(f"Starting Flask server on port {port}")
-    app.run(host='0.0.0.0', port=port, debug=True) 
+    app.run(host='0.0.0.0', port=port, debug=True)
