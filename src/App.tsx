@@ -10,6 +10,7 @@ import { SignUp } from './components/SignUp';
 import { Cart } from './components/Cart';
 import { Home } from './components/Home';
 import { AICart } from './components/AICart';
+import { Footer } from './components/Footer';
 import { Box, AppBar, Toolbar, Typography, Button, Badge, IconButton, Avatar, Menu, MenuItem, Tooltip, Fade, Paper, Link } from '@mui/material';
 import { 
   ShoppingCart as ShoppingCartIcon, 
@@ -30,6 +31,9 @@ import { useCart } from './contexts/CartContext';
 import { TextField } from '@mui/material';
 import { OrderSuccess } from './components/OrderSuccess';
 import { Orders } from './components/Orders';
+import { CategoryCard } from './components/CategoryCard';
+import { Offers } from './components/Offers';
+import { Contact } from './components/Contact';
 
 // Helper component to fix Grid typing issues with MUI v5
 const Grid = (props: any) => <MuiGrid {...props} />;
@@ -265,7 +269,7 @@ const Navigation: React.FC = () => {
             <NavButton to="/" icon={<HomeIcon />} label="Home" />
             <NavButton to="/categories" icon={<CategoryIcon />} label="Categories" />
             <NavButton to="/offers" icon={<LocalOfferIcon />} label="Offers" />
-            <NavButton to="/contact" icon={<ContactSupportIcon />} label="Contact" />
+            <NavButton to="/contacts" icon={<ContactSupportIcon />} label="Contact" />
             <Button 
               color="primary" 
               variant="contained"
@@ -532,125 +536,6 @@ const Navigation: React.FC = () => {
   );
 };
 
-// Footer component with enhanced visibility
-const Footer = () => {
-  // Helper component to fix Grid typing issues with MUI v5
-  const FooterGrid = (props: any) => <MuiGrid {...props} />;
-  
-  return (
-    <Box
-      component="footer"
-      sx={{
-        py: 4,
-        px: 3,
-        mt: 'auto',
-        backgroundColor: 'white',
-        borderTop: '1px solid',
-        borderColor: 'divider',
-        boxShadow: '0 -2px 10px rgba(0,0,0,0.05)',
-        position: 'relative',
-        zIndex: 10
-      }}
-    >
-      <Container maxWidth="lg">
-        <FooterGrid container spacing={4}>
-          <FooterGrid item xs={12} md={4}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <StoreIcon sx={{ color: 'primary.main', mr: 1, fontSize: 28 }} />
-              <Typography variant="h6" color="primary.main" fontWeight="bold">
-                Fresh Cart
-              </Typography>
-            </Box>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Your one-stop shop for fresh groceries delivered to your doorstep.
-            </Typography>
-          </FooterGrid>
-          <FooterGrid item xs={12} md={8}>
-            <FooterGrid container spacing={2}>
-              <FooterGrid item xs={6} sm={4}>
-                <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-                  Shop
-                </Typography>
-                <Box component="ul" sx={{ p: 0, m: 0, listStyle: 'none' }}>
-                  <Box component="li" sx={{ mb: 1 }}>
-                    <Link href="#" color="inherit" underline="hover">Categories</Link>
-                  </Box>
-                  <Box component="li" sx={{ mb: 1 }}>
-                    <Link href="#" color="inherit" underline="hover">Deals</Link>
-                  </Box>
-                  <Box component="li" sx={{ mb: 1 }}>
-                    <Link href="#" color="inherit" underline="hover">New Arrivals</Link>
-                  </Box>
-                </Box>
-              </FooterGrid>
-              <FooterGrid item xs={6} sm={4}>
-                <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-                  About
-                </Typography>
-                <Box component="ul" sx={{ p: 0, m: 0, listStyle: 'none' }}>
-                  <Box component="li" sx={{ mb: 1 }}>
-                    <Link href="#" color="inherit" underline="hover">Our Story</Link>
-                  </Box>
-                  <Box component="li" sx={{ mb: 1 }}>
-                    <Link href="#" color="inherit" underline="hover">Blog</Link>
-                  </Box>
-                  <Box component="li" sx={{ mb: 1 }}>
-                    <Link href="#" color="inherit" underline="hover">Careers</Link>
-                  </Box>
-                </Box>
-              </FooterGrid>
-              <FooterGrid item xs={6} sm={4}>
-                <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-                  Help
-                </Typography>
-                <Box component="ul" sx={{ p: 0, m: 0, listStyle: 'none' }}>
-                  <Box component="li" sx={{ mb: 1 }}>
-                    <Link href="#" color="inherit" underline="hover">FAQs</Link>
-                  </Box>
-                  <Box component="li" sx={{ mb: 1 }}>
-                    <Link href="#" color="inherit" underline="hover">Contact Us</Link>
-                  </Box>
-                  <Box component="li" sx={{ mb: 1 }}>
-                    <Link href="#" color="inherit" underline="hover">Shipping</Link>
-                  </Box>
-                </Box>
-              </FooterGrid>
-            </FooterGrid>
-          </FooterGrid>
-        </FooterGrid>
-        <Box 
-          sx={{ 
-            pt: 3, 
-            mt: 3, 
-            borderTop: '1px solid', 
-            borderColor: 'divider',
-            display: 'flex',
-            flexDirection: { xs: 'column', sm: 'row' },
-            justifyContent: 'space-between',
-            alignItems: { xs: 'center', sm: 'flex-start' },
-            textAlign: { xs: 'center', sm: 'left' }
-          }}
-        >
-          <Typography variant="body2" color="text.secondary">
-            © {new Date().getFullYear()} Fresh Cart. All rights reserved.
-          </Typography>
-          <Box sx={{ display: 'flex', gap: 2, mt: { xs: 2, sm: 0 } }}>
-            <Link href="#" color="inherit">
-              <FacebookIcon sx={{ fontSize: 20 }} />
-            </Link>
-            <Link href="#" color="inherit">
-              <TwitterIcon sx={{ fontSize: 20 }} />
-            </Link>
-            <Link href="#" color="inherit">
-              <InstagramIcon sx={{ fontSize: 20 }} />
-            </Link>
-          </Box>
-        </Box>
-      </Container>
-    </Box>
-  );
-};
-
 // Memoize the Navigation and Footer components
 const MemoizedNavigation = React.memo(Navigation);
 const MemoizedFooter = React.memo(Footer);
@@ -699,6 +584,9 @@ const App: React.FC = () => {
                     <Route path="/ai-cart" element={<PrivateRoute><AICart /></PrivateRoute>} />
                     <Route path="/order-success" element={<PrivateRoute><OrderSuccess /></PrivateRoute>} />
                     <Route path="/orders" element={<PrivateRoute><Orders /></PrivateRoute>} />
+                    <Route path="/categories" element={<CategoryCard />} />
+                    <Route path="/offers" element={<Offers />} />
+                    <Route path="/contacts" element={<Contact />} />
                   </Routes>
                 </Box>
                 <MemoizedFooter />

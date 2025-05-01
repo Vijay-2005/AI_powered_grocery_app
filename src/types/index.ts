@@ -23,6 +23,6 @@ export interface Order {
   userId: string;
   items: CartItem[];
   total: number;
-  status: 'pending' | 'completed' | 'cancelled';
+  status: 'pending' | 'delivered' | 'cancelled' | 'processing';
   createdAt: Date;
-} 
+}

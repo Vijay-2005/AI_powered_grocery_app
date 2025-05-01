@@ -45,7 +45,7 @@ export const Cart: React.FC = () => {
   };
 
   const getDeliveryFee = () => {
-    return calculateSubtotal() > 500 ? 0 : 40; // Free delivery above ₹500
+    return 0; // Free delivery on all orders
   };
 
   const getTax = () => {
@@ -433,4 +433,4 @@ export const Cart: React.FC = () => {
       </Box>
     </Container>
   );
-}; 
+};

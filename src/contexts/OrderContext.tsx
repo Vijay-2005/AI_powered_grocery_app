@@ -30,7 +30,7 @@ export interface Order {
   amount: number;
   date: string;
   userId: string;
-  status: 'pending' | 'delivered' | 'cancelled';
+  status: 'pending' | 'delivered' | 'cancelled' | 'processing';
   paymentMethod: string;
 }
 
@@ -197,4 +197,4 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       {children}
     </OrderContext.Provider>
   );
-}; 
+};

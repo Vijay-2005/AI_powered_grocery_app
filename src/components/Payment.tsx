@@ -225,16 +225,42 @@ export const Payment: React.FC = () => {
       const orderId = 'ORD' + Math.floor(1000000 + Math.random() * 9000000);
       const paymentId = 'COD' + Date.now();
       
-      setSuccess(true); // Show success message first
+      if (!currentUser) {
+        setError('You must be logged in to place an order');
+        setLoading(false);
+        return;
+      }
+
+      const orderData = {
+        items: items,
+        paymentId: paymentId,
+        orderId: orderId,
+        amount: calculateTotal(),
+        date: new Date().toISOString(),
+        userId: currentUser.uid,
+        status: 'processing' as const, // Set status to processing for COD orders
+        paymentMethod: 'cod'
+      };
+
+      console.log('Creating COD order:', orderData);
+      const order = await createOrder(orderData);
       
-      // Small delay to show the success message before proceeding
-      setTimeout(() => {
-        handlePaymentSuccess(paymentId, orderId);
-      }, 1000);
+      if (order) {
+        console.log('COD order created successfully:', order);
+        setOrderCreated(true);
+        setSuccess(true); // Set success only after order is created
+        
+        // Clear cart and navigate to success page
+        dispatch({ type: 'CLEAR_CART' });
+        navigate('/order-success', { state: { order } });
+      } else {
+        setError('Failed to create order. Please try again.');
+      }
     } catch (err) {
       console.error('Error processing COD payment:', err);
-      setLoading(false);
       setError('Error processing your order. Please try again.');
+    } finally {
+      setLoading(false); // Always set loading to false regardless of outcome
     }
   };
 
@@ -383,4 +409,4 @@ export const Payment: React.FC = () => {
       </Snackbar>
     </>
   );
-}; 
+};

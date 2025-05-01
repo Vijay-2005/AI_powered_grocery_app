@@ -405,12 +405,13 @@ export const Home: React.FC = () => {
             Join thousands of satisfied customers who enjoy fresh groceries delivered to their doorstep
           </Typography>
           
-          <Grid container spacing={2}>
+          <Grid container spacing={3}>
             {testimonials.map((testimonial, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
+              <Grid item xs={12} sm={6} md={4} key={index} sx={{ width: '100%' }}>
                 <Paper sx={{ 
                   p: { xs: 2, sm: 3 }, 
                   height: '100%', 
+                  width: '100%',
                   display: 'flex', 
                   flexDirection: 'column',
                   borderRadius: { xs: 2, sm: 3 },
@@ -450,12 +451,18 @@ export const Home: React.FC = () => {
                     sx={{ 
                       mb: { xs: 2, sm: 3 }, 
                       flexGrow: 1,
-                      fontSize: { xs: '0.85rem', sm: '1rem' }
+                      fontSize: { xs: '0.85rem', sm: '1rem' },
+                      display: '-webkit-box',
+                      overflow: 'hidden',
+                      WebkitBoxOrient: 'vertical',
+                      WebkitLineClamp: 5,
+                      lineHeight: '1.5em',
+                      height: { xs: 'auto', sm: '7.5em' }
                     }}
                   >
                     {testimonial.content}
                   </Typography>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                     <Box
                       sx={{
                         width: { xs: 40, sm: 50 },
@@ -472,18 +479,28 @@ export const Home: React.FC = () => {
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                       />
                     </Box>
-                    <Box>
+                    <Box sx={{ flexGrow: 1, overflow: 'hidden' }}>
                       <Typography 
                         variant="subtitle1" 
                         fontWeight="bold"
-                        sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}
+                        sx={{ 
+                          fontSize: { xs: '0.9rem', sm: '1rem' },
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis'
+                        }}
                       >
                         {testimonial.name}
                       </Typography>
                       <Typography 
                         variant="body2" 
                         color="text.secondary"
-                        sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+                        sx={{ 
+                          fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis'
+                        }}
                       >
                         {testimonial.location}
                       </Typography>
@@ -504,19 +521,19 @@ const testimonials = [
   {
     name: "Priya Sharma",
     location: "Delhi",
-    content: "Fresh Cart has transformed how I shop for groceries. The quality of their produce is exceptional, and I love the AI Recipe feature that helps me plan my meals effortlessly!",
+    content: "Fresh Cart has transformed how I shop for groceries. The quality of their produce is exceptional, and I love the AI Recipe feature that helps me plan my meals effortlessly! The delivery is always on time and packaging is eco-friendly.",
     avatar: "https://randomuser.me/api/portraits/women/65.jpg"
   },
   {
     name: "Rajesh Kumar",
     location: "Mumbai",
-    content: "I've been using Fresh Cart for 3 months now, and I'm impressed with their service. The delivery is always on time, and their app is so easy to use. Highly recommended!",
+    content: "I've been using Fresh Cart for 3 months now, and I'm impressed with their service. The delivery is always on time, and their app is so easy to use. The quality of products is consistently high, and customer service is excellent. Highly recommended!",
     avatar: "https://randomuser.me/api/portraits/men/32.jpg"
   },
   {
     name: "Aisha Patel",
     location: "Bangalore",
-    content: "The AI Recipe Cart is a game-changer! I just type the dish I want to make, and all ingredients are added to my cart automatically. Saves me so much time and effort.",
+    content: "The AI Recipe Cart is a game-changer! I just type the dish I want to make, and all ingredients are added to my cart automatically. Their organic section is fantastic and prices are reasonable. Saves me so much time and effort compared to traditional shopping.",
     avatar: "https://randomuser.me/api/portraits/women/44.jpg"
   }
 ]; 

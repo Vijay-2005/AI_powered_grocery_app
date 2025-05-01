@@ -2,6 +2,10 @@ export interface Category {
   id: string;
   name: string;
   image: string;
+  description?: string;
+  discount?: number;
+  rating?: number;
+  reviews?: string | number;
 }
 
 export const categories: Category[] = [
@@ -23,7 +27,7 @@ export const categories: Category[] = [
   {
     id: 'meat',
     name: 'Meat & Seafood',
-    image: 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
+    image: 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
   },
   {
     id: 'bakery',
@@ -239,4 +243,4 @@ export const products = [
     description: 'Classic French butter croissant.',
     unit: 'pack'
   }
-]; 
+];
