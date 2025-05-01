@@ -12,11 +12,11 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-# Configure Gemini API
-GEMINI_API_KEY = os.environ.get('REACT_APP_GEMINI_API_KEY')
+# Configure Gemini API - try both with and without REACT_APP_ prefix for Vercel compatibility
+GEMINI_API_KEY = os.environ.get('REACT_APP_GEMINI_API_KEY') or os.environ.get('GEMINI_API_KEY')
 
 if not GEMINI_API_KEY:
-    print("WARNING: GEMINI_API_KEY environment variable is not set!")
+    print("WARNING: Neither REACT_APP_GEMINI_API_KEY nor GEMINI_API_KEY environment variable is set!")
 else:
     print(f"Using Gemini API key: {GEMINI_API_KEY[:4]}...{GEMINI_API_KEY[-4:]}")
 
