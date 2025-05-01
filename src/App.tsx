@@ -1,4 +1,5 @@
 import React from 'react';
+import { Analytics } from "@vercel/analytics/react"
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { ThemeProvider, CssBaseline, alpha, GlobalStyles, Container, Grid as MuiGrid } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
@@ -595,6 +596,7 @@ const App: React.FC = () => {
           </CartProvider>
         </AuthProvider>
       </Router>
+      <Analytics />
     </ThemeProvider>
   );
 };
