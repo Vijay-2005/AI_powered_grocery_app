@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Firebase Auth</title>
+  <!-- Import Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    input, button, textarea {
+      margin: 5px 0;
+      padding: 8px;
+      display: block;
+      width: 100%;
+    }
+    button {
+      background-color: #4285F4;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #3367D6;
+    }
+    .section {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Firebase Auth Token Generator</h1>
+  
+  <div class="section">
+    <h2>Step 1: Configure Firebase</h2>
+    <p>Enter your Firebase configuration:</p>
+    <input type="text" id="apiKey" placeholder="apiKey">
+    <input type="text" id="authDomain" placeholder="authDomain">
+    <input type="text" id="projectId" placeholder="projectId">
+    <button onclick="initializeFirebase()">Initialize Firebase</button>
+  </div>
+  
+  <div class="section">
+    <h2>Step 2: Sign Up</h2>
+    <input type="email" id="signupEmail" placeholder="Email">
+    <input type="password" id="signupPassword" placeholder="Password (at least 6 characters)">
+    <button onclick="signUp()">Sign Up</button>
+  </div>
+  
+  <div class="section">
+    <h2>Step 3: Sign In & Get Token</h2>
+    <input type="email" id="signinEmail" placeholder="Email">
+    <input type="password" id="signinPassword" placeholder="Password">
+    <button onclick="signIn()">Sign In & Get Token</button>
+  </div>
+  
+  <div class="section">
+    <h2>Your Token:</h2>
+    <textarea id="token" rows="8" cols="50" readonly></textarea>
+    <p>Use this token with your Spring Boot backend as:</p>
+    <code>Authorization: Bearer &lt;token&gt;</code>
+  </div>
+  
+  <script>
+    let firebaseApp;
+    let initialized = false;
+    
+    function initializeFirebase() {
+      const apiKey = document.getElementById('apiKey').value;
+      const authDomain = document.getElementById('authDomain').value;
+      const projectId = document.getElementById('projectId').value;
+      
+      if (!apiKey || !authDomain || !projectId) {
+        alert("Please fill in all Firebase configuration fields");
+        return;
+      }
+      
+      const firebaseConfig = {
+        apiKey: apiKey,
+        authDomain: authDomain,
+        projectId: projectId
+      };
+      
+      try {
+        firebaseApp = firebase.initializeApp(firebaseConfig);
+        initialized = true;
+        alert("Firebase initialized successfully!");
+      } catch (error) {
+        alert("Error initializing Firebase: " + error.message);
+      }
+    }
+
+    async function signUp() {
+      if (!initialized) {
+        alert("Please initialize Firebase first!");
+        return;
+      }
+      
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+      
+      try {
+        const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+        alert(`User created successfully: ${user.email}`);
+        
+        // Auto-fill signin fields
+        document.getElementById('signinEmail').value = email;
+        document.getElementById('signinPassword').value = password;
+      } catch (error) {
+        alert("Error creating user: " + error.message);
+      }
+    }
+    
+    async function signIn() {
+      if (!initialized) {
+        alert("Please initialize Firebase first!");
+        return;
+      }
+      
+      const email = document.getElementById('signinEmail').value;
+      const password = document.getElementById('signinPassword').value;
+      
+      try {
+        const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+        
+        // Get the ID token
+        const token = await user.getIdToken(true);
+        document.getElementById('token').value = token;
+      } catch (error) {
+        alert("Error signing in: " + error.message);
+        document.getElementById('token').value = "Error: " + error.message;
+      }
+    }
+  </script>
+</body>
+</html>

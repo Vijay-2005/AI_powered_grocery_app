@@ -64,24 +64,6 @@ export const Orders: React.FC = () => {
     }
   };
 
-  const getRemainingTime = (dateString: string) => {
-    const orderDate = new Date(dateString);
-    const expiryDate = new Date(orderDate);
-    expiryDate.setDate(expiryDate.getDate() + 1);
-    
-    const now = new Date();
-    const timeRemaining = expiryDate.getTime() - now.getTime();
-    
-    // If expired
-    if (timeRemaining <= 0) return 'Expired';
-    
-    // Convert to hours and minutes
-    const hoursRemaining = Math.floor(timeRemaining / (1000 * 60 * 60));
-    const minutesRemaining = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-    
-    return `${hoursRemaining}h ${minutesRemaining}m remaining`;
-  };
-
   if (loading) {
     return (
       <Container maxWidth="md" sx={{ py: 8, textAlign: 'center' }}>
@@ -131,10 +113,6 @@ export const Orders: React.FC = () => {
         </Paper>
       ) : (
         <>
-          <Typography variant="body2" color="text.secondary" paragraph>
-            Orders are automatically removed after 24 hours
-          </Typography>
-          
           {orders.map((order) => (
             <Paper 
               key={order.id} 
@@ -158,7 +136,7 @@ export const Orders: React.FC = () => {
                   mb: 1
                 }}>
                   <Typography variant="subtitle1" fontWeight="bold">
-                    Order #{order.orderId.slice(-8)}
+                    Order #{String(order.orderId).slice(-8)}
                   </Typography>
                   
                   <Box>
@@ -166,16 +144,7 @@ export const Orders: React.FC = () => {
                       label={order.status}
                       color={order.status === 'delivered' ? 'success' : 'primary'}
                       size="small"
-                      sx={{ mr: 1 }}
                     />
-                    <NoSsr>
-                      <Chip 
-                        label={getRemainingTime(order.date)}
-                        color="warning"
-                        size="small"
-                        variant="outlined"
-                      />
-                    </NoSsr>
                   </Box>
                 </Box>
                 
@@ -244,4 +213,4 @@ export const Orders: React.FC = () => {
       )}
     </Container>
   );
-}; 
+};

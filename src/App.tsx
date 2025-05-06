@@ -1,7 +1,7 @@
 import React from 'react';
 import { Analytics } from "@vercel/analytics/react"
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import { ThemeProvider, CssBaseline, alpha, GlobalStyles, Container, Grid as MuiGrid } from '@mui/material';
+import { ThemeProvider, CssBaseline, alpha, GlobalStyles, Container, Grid as MuiGrid, Chip } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { AuthProvider } from './contexts/AuthContext';
 import { CartProvider } from './contexts/CartContext';
@@ -12,7 +12,7 @@ import { Cart } from './components/Cart';
 import { Home } from './components/Home';
 import { AICart } from './components/AICart';
 import { Footer } from './components/Footer';
-import { Box, AppBar, Toolbar, Typography, Button, Badge, IconButton, Avatar, Menu, MenuItem, Tooltip, Fade, Paper, Link } from '@mui/material';
+import { Box, AppBar, Toolbar, Typography, Button, Badge, IconButton, Avatar, Menu, MenuItem, Tooltip, Fade, Paper, Link, Drawer, List, ListItem, ListItemText, ListItemIcon, Divider } from '@mui/material';
 import { 
   ShoppingCart as ShoppingCartIcon, 
   Favorite as FavoriteIcon, 
@@ -25,7 +25,11 @@ import {
   SmartToy as AIIcon,
   Facebook as FacebookIcon,
   Twitter as TwitterIcon,
-  Instagram as InstagramIcon
+  Instagram as InstagramIcon,
+  Menu as MenuIcon,
+  Person as PersonIcon,
+  ExitToApp as LogoutIcon,
+  ReceiptLong as OrdersIcon
 } from '@mui/icons-material';
 import { useAuth } from './contexts/AuthContext';
 import { useCart } from './contexts/CartContext';
@@ -184,6 +188,7 @@ const Navigation: React.FC = () => {
   const { state: { items } } = useCart();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [mobileDrawerOpen, setMobileDrawerOpen] = React.useState(false);
 
   const handleLogout = async () => {
     try {
@@ -194,10 +199,30 @@ const Navigation: React.FC = () => {
     }
   };
 
+  const toggleMobileDrawer = () => {
+    setMobileDrawerOpen(!mobileDrawerOpen);
+  };
+
+  const navigateTo = (path: string) => {
+    navigate(path);
+    setMobileDrawerOpen(false);
+  };
+
   return (
     <>
       <AppBar position="fixed" elevation={0} sx={{ bgcolor: 'white', color: 'text.primary' }}>
         <Toolbar sx={{ py: 0.5 }}>
+          {/* Hamburger Menu - Mobile Only */}
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={toggleMobileDrawer}
+            sx={{ mr: 1, display: { md: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
+
           {/* Logo and Brand */}
           <Box 
             sx={{ 
@@ -502,6 +527,7 @@ const Navigation: React.FC = () => {
                   variant="outlined"
                   onClick={() => navigate('/signin')}
                   sx={{ 
+                    display: { xs: 'none', sm: 'flex' },
                     fontWeight: 'medium',
                     transition: 'all 0.3s ease',
                     '&:hover': {
@@ -518,6 +544,7 @@ const Navigation: React.FC = () => {
                   onClick={() => navigate('/signup')}
                   sx={{ 
                     ml: 1, 
+                    display: { xs: 'none', sm: 'flex' },
                     fontWeight: 'medium',
                     transition: 'all 0.3s ease',
                     '&:hover': {
@@ -532,6 +559,211 @@ const Navigation: React.FC = () => {
           </Box>
         </Toolbar>
       </AppBar>
+
+      {/* Mobile Navigation Drawer */}
+      <Drawer
+        anchor="left"
+        open={mobileDrawerOpen}
+        onClose={() => setMobileDrawerOpen(false)}
+        PaperProps={{
+          sx: {
+            width: 280,
+            borderRadius: '0 16px 16px 0',
+            pt: 1
+          }
+        }}
+      >
+        <Box sx={{ p: 2, display: 'flex', alignItems: 'center', borderBottom: '1px solid rgba(0,0,0,0.08)' }}>
+          <StoreIcon sx={{ color: 'primary.main', mr: 1, fontSize: 28 }} />
+          <Typography variant="h6" color="primary.main" fontWeight="bold">
+            Fresh Cart
+          </Typography>
+        </Box>
+
+        <List sx={{ px: 1 }}>
+          <ListItem 
+            component="div"
+            onClick={() => navigateTo('/')}
+            sx={{ 
+              borderRadius: 2, 
+              mb: 0.5,
+              '&:hover': { bgcolor: 'rgba(46, 125, 50, 0.08)' } 
+            }}
+          >
+            <ListItemIcon sx={{ minWidth: 40, color: 'primary.main' }}>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItem>
+          
+          <ListItem 
+            component="div"
+            onClick={() => navigateTo('/categories')}
+            sx={{ 
+              borderRadius: 2, 
+              mb: 0.5,
+              '&:hover': { bgcolor: 'rgba(46, 125, 50, 0.08)' } 
+            }}
+          >
+            <ListItemIcon sx={{ minWidth: 40, color: 'primary.main' }}>
+              <CategoryIcon />
+            </ListItemIcon>
+            <ListItemText primary="Categories" />
+          </ListItem>
+          
+          <ListItem 
+            component="div"
+            onClick={() => navigateTo('/offers')}
+            sx={{ 
+              borderRadius: 2, 
+              mb: 0.5,
+              '&:hover': { bgcolor: 'rgba(46, 125, 50, 0.08)' } 
+            }}
+          >
+            <ListItemIcon sx={{ minWidth: 40, color: 'primary.main' }}>
+              <LocalOfferIcon />
+            </ListItemIcon>
+            <ListItemText primary="Offers" />
+          </ListItem>
+          
+          <ListItem 
+            component="div"
+            onClick={() => navigateTo('/contacts')}
+            sx={{ 
+              borderRadius: 2, 
+              mb: 0.5,
+              '&:hover': { bgcolor: 'rgba(46, 125, 50, 0.08)' } 
+            }}
+          >
+            <ListItemIcon sx={{ minWidth: 40, color: 'primary.main' }}>
+              <ContactSupportIcon />
+            </ListItemIcon>
+            <ListItemText primary="Contact" />
+          </ListItem>
+          
+          <ListItem 
+            component="div"
+            onClick={() => navigateTo('/ai-cart')}
+            sx={{ 
+              borderRadius: 2, 
+              mb: 0.5,
+              bgcolor: 'rgba(255, 152, 0, 0.1)', 
+              '&:hover': { bgcolor: 'rgba(255, 152, 0, 0.2)' } 
+            }}
+          >
+            <ListItemIcon sx={{ minWidth: 40, color: 'secondary.main' }}>
+              <AIIcon />
+            </ListItemIcon>
+            <ListItemText 
+              primary={
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography sx={{ fontWeight: 'bold' }}>AI Recipe Cart</Typography>
+                  <Chip
+                    label="NEW"
+                    size="small"
+                    color="error"
+                    sx={{ ml: 1, height: 20, fontWeight: 'bold', fontSize: '0.6rem' }}
+                  />
+                </Box>
+              } 
+            />
+          </ListItem>
+        </List>
+        
+        <Divider sx={{ my: 2 }} />
+        
+        {currentUser ? (
+          <List sx={{ px: 1 }}>
+            <ListItem 
+              component="div"
+              onClick={() => navigateTo('/profile')}
+              sx={{ 
+                borderRadius: 2, 
+                mb: 0.5,
+                '&:hover': { bgcolor: 'rgba(46, 125, 50, 0.08)' } 
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: 40, color: 'primary.main' }}>
+                <PersonIcon />
+              </ListItemIcon>
+              <ListItemText primary="My Profile" />
+            </ListItem>
+            
+            <ListItem 
+              component="div"
+              onClick={() => navigateTo('/orders')}
+              sx={{ 
+                borderRadius: 2, 
+                mb: 0.5,
+                '&:hover': { bgcolor: 'rgba(46, 125, 50, 0.08)' } 
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: 40, color: 'primary.main' }}>
+                <OrdersIcon />
+              </ListItemIcon>
+              <ListItemText primary="My Orders" />
+            </ListItem>
+            
+            <ListItem 
+              component="div"
+              onClick={() => navigateTo('/cart')}
+              sx={{ 
+                borderRadius: 2, 
+                mb: 0.5,
+                '&:hover': { bgcolor: 'rgba(46, 125, 50, 0.08)' } 
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: 40, color: 'primary.main' }}>
+                <Badge badgeContent={items.length} color="secondary">
+                  <ShoppingCartIcon />
+                </Badge>
+              </ListItemIcon>
+              <ListItemText primary="My Cart" />
+            </ListItem>
+            
+            <ListItem 
+              component="div"
+              onClick={() => {
+                handleLogout();
+                setMobileDrawerOpen(false);
+              }}
+              sx={{ 
+                borderRadius: 2, 
+                mb: 0.5,
+                '&:hover': { bgcolor: 'rgba(211, 47, 47, 0.08)' },
+                color: 'error.main' 
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: 40, color: 'error.main' }}>
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText primary="Logout" />
+            </ListItem>
+          </List>
+        ) : (
+          <Box sx={{ px: 2, pb: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Button 
+              variant="outlined" 
+              color="primary" 
+              fullWidth
+              onClick={() => navigateTo('/signin')}
+              sx={{ borderRadius: 8 }}
+            >
+              Sign In
+            </Button>
+            <Button 
+              variant="contained" 
+              color="primary" 
+              fullWidth
+              onClick={() => navigateTo('/signup')}
+              sx={{ borderRadius: 8 }}
+            >
+              Sign Up
+            </Button>
+          </Box>
+        )}
+      </Drawer>
+      
       <Toolbar /> {/* Spacer for fixed AppBar */}
     </>
   );

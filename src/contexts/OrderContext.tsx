@@ -5,13 +5,12 @@ import {
   where, 
   getDocs, 
   addDoc, 
-  deleteDoc, 
   doc, 
-  Timestamp,
   serverTimestamp
 } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useAuth } from './AuthContext';
+import { API_BASE_URL, API_ENDPOINTS } from '../config';
 
 // Types for order data
 export interface OrderItem {
@@ -32,6 +31,8 @@ export interface Order {
   userId: string;
   status: 'pending' | 'delivered' | 'cancelled' | 'processing';
   paymentMethod: string;
+  productId?: string; // For backend compatibility
+  quantity?: number;   // For backend compatibility
 }
 
 interface OrderContextType {
@@ -70,18 +71,59 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     try {
       console.log('Creating order with data:', orderData);
       
-      // Add server timestamp for better tracking
+      // Add properties needed for the order
       const orderWithTimestamp = {
         ...orderData,
         userId: currentUser.uid,
-        createdAt: serverTimestamp(),
-        expiresAt: new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString() // 24 hours from now
+        createdAt: new Date().toISOString()
       };
       
-      const docRef = await addDoc(collection(db, 'orders'), orderWithTimestamp);
-      console.log('Order created with ID:', docRef.id);
+      // Ensure we have the fields required by backend
+      if (!orderWithTimestamp.productId && orderWithTimestamp.items.length > 0) {
+        orderWithTimestamp.productId = orderWithTimestamp.items[0].id;
+      }
       
-      const newOrder = { ...orderData, id: docRef.id } as Order;
+      if (!orderWithTimestamp.quantity) {
+        orderWithTimestamp.quantity = orderWithTimestamp.items.reduce(
+          (sum, item) => sum + item.quantity, 
+          0
+        );
+      }
+      
+      // Save ONLY to Spring Boot backend (removing Firebase save)
+      const backendUrl = API_BASE_URL;
+      const response = await fetch(`${backendUrl}${API_ENDPOINTS.ORDERS}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${await currentUser.getIdToken()}`
+        },
+        body: JSON.stringify({
+          userId: currentUser.uid,
+          productId: orderWithTimestamp.productId,
+          quantity: orderWithTimestamp.quantity,
+          amount: orderWithTimestamp.amount,
+          orderTime: new Date().toISOString()
+        })
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Failed to save order to backend:', errorText);
+        throw new Error(`Failed to save order: ${errorText}`);
+      }
+      
+      console.log('Order saved to backend successfully');
+      const savedOrder = await response.json();
+      console.log('Backend returned order:', savedOrder);
+      
+      // Create a properly formatted order object from the backend response
+      const newOrder = { 
+        ...orderData,
+        id: savedOrder.id?.toString() || `backend-${Date.now()}`,
+        orderId: savedOrder.id?.toString() || orderData.orderId,
+        userId: currentUser.uid
+      } as Order;
       
       // Update the orders state with the new order
       setOrders(prev => [newOrder, ...prev]);
@@ -118,44 +160,55 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     try {
       console.log('Fetching orders for user:', currentUser.uid);
       
-      // Fetch orders from Firestore
-      const ordersRef = collection(db, 'orders');
-      const q = query(ordersRef, where('userId', '==', currentUser.uid));
-      const querySnapshot = await getDocs(q);
-      
+      // Only fetch orders from backend API (removed Firebase fetching)
       const ordersData: Order[] = [];
-      querySnapshot.forEach((doc) => {
-        const data = doc.data() as Omit<Order, 'id'>;
-        ordersData.push({ ...data, id: doc.id } as Order);
-      });
       
-      console.log(`Found ${ordersData.length} orders`);
-      
-      // Delete orders older than 1 day
-      const oneDayAgo = new Date();
-      oneDayAgo.setDate(oneDayAgo.getDate() - 1);
-      
-      // Filter orders
-      const filteredOrders = ordersData.filter(order => {
-        const orderDate = new Date(order.date);
-        const isValid = orderDate > oneDayAgo;
+      try {
+        const idToken = await currentUser.getIdToken();
+        const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ORDER_HISTORY}?userId=${currentUser.uid}`, {
+          headers: {
+            'Authorization': `Bearer ${idToken}`
+          }
+        });
         
-        // If expired, delete it
-        if (!isValid) {
-          console.log(`Deleting expired order: ${order.id}`);
-          deleteDoc(doc(db, 'orders', order.id))
-            .catch(err => console.error('Error deleting old order:', err));
+        if (response.ok) {
+          const backendOrders = await response.json();
+          console.log(`Found ${backendOrders.length} orders in backend`);
+          
+          // Convert backend orders to our Order format
+          backendOrders.forEach((backendOrder: any) => {
+            // Convert backend order to our Order format
+            ordersData.push({
+              id: backendOrder.id?.toString() || `backend-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+              orderId: backendOrder.id?.toString() || backendOrder.orderId || 'unknown',
+              paymentId: backendOrder.paymentId || 'unknown',
+              amount: backendOrder.amount,
+              date: backendOrder.orderTime || backendOrder.date || new Date().toISOString(),
+              userId: currentUser.uid,
+              status: backendOrder.status || 'processing',
+              paymentMethod: backendOrder.paymentMethod || 'unknown',
+              items: backendOrder.items || [{
+                id: backendOrder.productId || 'unknown',
+                name: backendOrder.productName || 'Product',
+                price: backendOrder.amount || 0,
+                quantity: backendOrder.quantity || 1
+              }]
+            } as Order);
+          });
+        } else {
+          const errorText = await response.text();
+          console.error('Failed to fetch orders from backend:', errorText);
+          throw new Error(`Failed to fetch orders: ${errorText}`);
         }
-        
-        return isValid;
-      });
-      
-      console.log(`${filteredOrders.length} orders remain after filtering expired ones`);
+      } catch (backendErr) {
+        console.error('Error fetching from backend:', backendErr);
+        throw backendErr; // Re-throw to be caught by the outer try/catch
+      }
       
       // Sort by date (newest first)
-      filteredOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      ordersData.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
       
-      setOrders(filteredOrders);
+      setOrders(ordersData);
     } catch (err) {
       console.error('Error fetching orders:', err);
       setError('Failed to load orders. Please try again.');
@@ -169,14 +222,6 @@ export const OrderProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (currentUser) {
       console.log('User logged in, fetching orders');
       fetchOrders();
-      
-      // Set up periodic cleanup every hour, not every render
-      const cleanupInterval = setInterval(() => {
-        console.log('Running periodic order cleanup');
-        fetchOrders(); // This will also clean up expired orders
-      }, 60 * 60 * 1000); // Every hour
-      
-      return () => clearInterval(cleanupInterval);
     } else {
       console.log('No user logged in, clearing orders');
       setOrders([]);

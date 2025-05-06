@@ -20,14 +20,21 @@ interface OrderItem {
   name: string;
   price: number;
   quantity: number;
+  image?: string;
 }
 
 interface Order {
+  id?: string;
   items: OrderItem[];
   paymentId: string;
   orderId: string;
   amount: number;
   date: string;
+  status?: 'pending' | 'delivered' | 'cancelled' | 'processing';
+  paymentMethod?: string;
+  userId?: string;
+  productId?: string;
+  quantity?: number;
 }
 
 export const OrderSuccess: React.FC = () => {
@@ -77,6 +84,37 @@ export const OrderSuccess: React.FC = () => {
     return new Intl.DateTimeFormat('en-IN', options).format(date);
   };
 
+  const getStatusChip = () => {
+    const status = order.status || 'processing';
+    let color: 'success' | 'warning' | 'error' | 'default' | 'primary' | 'secondary' | 'info' = 'default';
+    
+    switch (status) {
+      case 'delivered':
+        color = 'success';
+        break;
+      case 'processing':
+        color = 'info';
+        break;
+      case 'pending':
+        color = 'warning';
+        break;
+      case 'cancelled':
+        color = 'error';
+        break;
+      default:
+        color = 'default';
+    }
+    
+    return (
+      <Chip 
+        label={status.charAt(0).toUpperCase() + status.slice(1)}
+        color={color}
+        size="small"
+        sx={{ ml: 1 }}
+      />
+    );
+  };
+
   return (
     <Container maxWidth="md" sx={{ py: { xs: 4, md: 8 } }}>
       <Paper 
@@ -123,12 +161,14 @@ export const OrderSuccess: React.FC = () => {
             Thank you for your purchase. Your order has been confirmed.
           </Typography>
           
-          <Chip 
-            icon={<ShippingIcon />} 
-            label={`Expected Delivery: ${getDeliveryDate()}`}
-            color="primary"
-            sx={{ mt: 2 }}
-          />
+          <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+            <Chip 
+              icon={<ShippingIcon />} 
+              label={`Expected Delivery: ${getDeliveryDate()}`}
+              color="primary"
+            />
+            {getStatusChip()}
+          </Box>
         </Box>
         
         <Box sx={{ bgcolor: '#f8f8f8', p: 3, borderRadius: 2, mb: 4 }}>
@@ -161,6 +201,15 @@ export const OrderSuccess: React.FC = () => {
               </Typography>
               <Typography variant="body1" fontWeight="medium">
                 {order.paymentId.slice(0, 10) + '...'}
+              </Typography>
+            </Box>
+            
+            <Box sx={{ minWidth: '180px' }}>
+              <Typography variant="body2" color="text.secondary">
+                Payment Method
+              </Typography>
+              <Typography variant="body1" fontWeight="medium">
+                {order.paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online Payment'}
               </Typography>
             </Box>
           </Box>
