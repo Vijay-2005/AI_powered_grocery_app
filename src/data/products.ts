@@ -27,7 +27,7 @@ export const categories: Category[] = [
   {
     id: 'meat',
     name: 'Meat & Seafood',
-    image: 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
+    image: 'https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   },
   {
     id: 'bakery',
