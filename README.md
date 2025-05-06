@@ -18,7 +18,7 @@ A modern React-based grocery shopping application with TypeScript and Firebase i
 
 - **Frontend**: React 19 with TypeScript
 - **UI Components**: Material UI v7
-- **Authentication & Database**: Firebase
+- **Authentication & Database**: Firebase and Railway Mysql 
 - **Routing**: React Router v7
 - **State Management**: Context API
 - **Styling**: Emotion (CSS-in-JS)
