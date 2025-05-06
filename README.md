@@ -1,6 +1,6 @@
 # Fresh Cart - Grocery Shopping App
 
-![Fresh Cart Logo](https://i.imgur.com/XGSLRrg.png)
+![Screenshot 2025-05-06 202023.png](<https://media-hosting.imagekit.io/99b98f26f3254b9e/Screenshot 2025-05-06 202023.png?Expires=1841151075&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=mMphM6sZV05OKuzweigc0LjHS4AUxskTzogldWzEXGRgo--pCHlPsaflbN8~3U~yOU-0hZHeuzgz8fcHysLQow8-o4lpIqgI2D-gpvtZnjCe2d3FN--qCpvzeQLWEM-tP5uGiQ1C1uGz~xQhazD3vx7ntY2-pfOEsB5TnUdRvy3bTLckNI0MWGtHNGNVbH1oMea83koHaBc1OUCU5PvbGsvU3587dyNN9xd9zsc9F1xsQZ8mxvBugPHhhKYlQCPezUq2zPjFMgWyZIdZqTTP2WijfaKDgZC65ZO4hrnXd0mRSFJf9hcYV2a9lfzxnhKX4jf2reIsxkQ7-RPKu5dAow__>)
 
 A modern React-based grocery shopping application with TypeScript and Firebase integration. Shop for fresh groceries with a beautiful UI, intuitive shopping cart, and secure UPI payment processing.
 
@@ -70,17 +70,15 @@ A modern React-based grocery shopping application with TypeScript and Firebase i
    The backend will run on [http://localhost:5000](http://localhost:5000)
 
 ## 📷 Screenshots
+![Screenshot 2025-05-06 202023.png](<https://media-hosting.imagekit.io/99b98f26f3254b9e/Screenshot%202025-05-06%20202023.png?Expires=1841151075&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=mMphM6sZV05OKuzweigc0LjHS4AUxskTzogldWzEXGRgo--pCHlPsaflbN8~3U~yOU-0hZHeuzgz8fcHysLQow8-o4lpIqgI2D-gpvtZnjCe2d3FN--qCpvzeQLWEM-tP5uGiQ1C1uGz~xQhazD3vx7ntY2-pfOEsB5TnUdRvy3bTLckNI0MWGtHNGNVbH1oMea83koHaBc1OUCU5PvbGsvU3587dyNN9xd9zsc9F1xsQZ8mxvBugPHhhKYlQCPezUq2zPjFMgWyZIdZqTTP2WijfaKDgZC65ZO4hrnXd0mRSFJf9hcYV2a9lfzxnhKX4jf2reIsxkQ7-RPKu5dAow__>)
 
-<table>
-  <tr>
-    <td><img src="https://i.imgur.com/example1.png" alt="Home Page" width="100%"></td>
-    <td><img src="https://i.imgur.com/example2.png" alt="Product Page" width="100%"></td>
-  </tr>
-  <tr>
-    <td><img src="https://i.imgur.com/example3.png" alt="Shopping Cart" width="100%"></td>
-    <td><img src="https://i.imgur.com/example4.png" alt="Checkout" width="100%"></td>
-  </tr>
-</table>
+  
+ ![Screenshot 2025-05-06 203854.png](<https://media-hosting.imagekit.io/7ee360152cd74a70/Screenshot%202025-05-06%20203854.png?Expires=1841152166&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=JYSxa8N~Luhxu1tS3dkczp9t4bv~Nf~RZ5ET-v5tLE-0lbn-8368PpwxROH~aRG4ry4q9DfeLChRk9~VPz31OPTcmNg-xnq2urU~DbHAkrVZCsw1tN-YERZpSKbwKSD28TiMMDvGPJzqWhQ04pGPKSeQPVCEqIQ~rBsIKjicZlcDsDc4nTayohADc6lZfHz-i~PqGx7~MjtIIGftN9FQEzdtyY7XD5RUiGN4mEZZ0WGjUU2FBUuxsQe2-4t8N943a~t-jqnbn9zvmnV7xF7F5iK9iQmqGAy~xLgienKBoQg06AhOsP8xwRGYthueOA5lb0icy0NWw-Gvv8o0u8vndQ__>)
+
+ ![Screenshot 2025-05-06 204038.png](<https://media-hosting.imagekit.io/cea3356e530242da/Screenshot%202025-05-06%20204038.png?Expires=1841152250&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=WJmRrb89JXEzZeGVJpylHhJk9txAU1zWRQ5t9WhtoArn2UORZbNIHLc27kDtaBk2TwTY1aE5TM02fG9iSjdt7qNeFdbPVzlUl8-mKtKf3Va1fChQmvkEM87uHehGe2MulCQoGWOGXDua9doerOarZe3~umuEVV4AnUIL~SwNMZCfIoK6WWycqTXjawwi6T3tXIt6VDaAH0V0SqOguf0pVRccZFJlTkMyyp538dvjb7E1HXsAJXANdbpiGGxHA~eM03pTEEv2yoQqXMe05e3AjfleCxUatOSrsRRShrhVS5FIdy~rfbDerq2lx4Crf4eXBLWMs8N5O14qAVBxFxflCg__>)
+
+ ![Screenshot 2025-05-06 203832.png](<https://media-hosting.imagekit.io/02955b8c24bc4357/Screenshot%202025-05-06%20203832.png?Expires=1841152327&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=LOTOv~9RVJouj973gOjAQDW9E0wzqgSxNAo4NGNMwxiYAArIzLZ~5uj1DOYTHzkgVCCbw883~vSQWUqWwmP4SAiyNRgFr0aMWmsdUUcoY16peohf41bXHoGU3WNSwfDtxhdyUFzRX1D4Ty3GlvSYNNy3revKvCuY0gSRXAMrfD98pmGTSi39~7S~wIkbbaWqGMLeYzV-slXN6yOS08qrtwlZjM~X8XWHhyGNC1YLp9PRChL5MwJYuUbf-9TeA580vgdwk~KOHnN2DqgXKoi0Fvw0c9E9iBaOWx4HUWERCq6W66mh0FdcaT2rBO~hDAAKyBspT5UkQ39LUu4rQqm3mA__>)
+  
 
 ## 🌐 Deployment
 
