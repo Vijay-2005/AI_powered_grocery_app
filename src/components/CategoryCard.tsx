@@ -4,23 +4,32 @@ import { ArrowForward as ArrowForwardIcon, LocalOffer as LocalOfferIcon } from '
 import { useNavigate } from 'react-router-dom';
 import { categories } from '../data/products';
 
-// Helper component to fix Grid typing issues with MUI v5
+/**
+ * Helper component to fix Grid typing issues with MUI v5
+ * This prevents TypeScript errors when using Grid with dynamic props
+ */
 const Item = (props: any) => <Grid {...props} />;
 
-// Additional category highlight type definition
+/**
+ * Interface defining the structure of category highlight data
+ * Used for the special highlight cards with colored backgrounds
+ */
 interface CategoryHighlight {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  bgColor: string;
-  textColor: string;
-  buttonColor: 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning';
-  buttonText: string;
-  link: string;
-  buttonTextColor?: string;
+  title: string;                // Title of the highlight
+  description: string;          // Description text
+  icon: React.ReactNode;        // Icon component to display
+  bgColor: string;              // Background color of the card
+  textColor: string;            // Text color to use
+  buttonColor: 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning';  // Button color variant
+  buttonText: string;           // Text to display on the button
+  link: string;                 // Navigation link for the button
+  buttonTextColor?: string;     // Optional text color override for the button
 }
 
-// Additional category data
+/**
+ * Data for the category highlights section
+ * Each card contains information about a specific product category with custom styling
+ */
 const categoryHighlights: CategoryHighlight[] = [
   {
     title: "Organic Produce",
@@ -80,16 +89,24 @@ const categoryHighlights: CategoryHighlight[] = [
 ];
 
 // Define seasonal categories
+/**
+ * Interface for seasonal categories data structure
+ * Used to create seasonal promotion cards with special discounts and ratings
+ */
 interface SeasonalCategory {
-  id: string;
-  name: string;
-  image: string;
-  description: string;
-  discount?: string;
-  rating: number;
-  reviews: string;
+  id: string;          // Unique identifier for the category
+  name: string;        // Display name
+  image: string;       // URL for the category image
+  description: string; // Detailed description text
+  discount?: string;   // Optional discount percentage
+  rating: number;      // Star rating (out of 5)
+  reviews: string;     // Number of reviews text
 }
 
+/**
+ * Data for seasonal categories section
+ * Showcases seasonal and promotional items
+ */
 const seasonalCategories: SeasonalCategory[] = [
   {
     id: 'summer-fruits',
@@ -119,7 +136,18 @@ const seasonalCategories: SeasonalCategory[] = [
   }
 ];
 
-// Card component for consistency
+/**
+ * Card component for displaying category items consistently across sections
+ * Includes image, name, description, rating, and action button
+ * 
+ * @param image - URL of the category image
+ * @param name - Display name of the category
+ * @param description - Detailed description text
+ * @param rating - Star rating value (out of 5)
+ * @param reviews - Number of reviews/items text
+ * @param discount - Optional discount percentage (displayed as a chip)
+ * @param id - Category identifier used for navigation
+ */
 const CategoryItemCard: React.FC<{
   image: string;
   name: string;
@@ -229,6 +257,16 @@ const CategoryItemCard: React.FC<{
   );
 };
 
+/**
+ * Main Categories page component
+ * Displays all product categories organized into sections:
+ * - Header with page title and description
+ * - Featured Categories grid (from data/products.ts)
+ * - Seasonal Categories with promotions and ratings
+ * - Category Highlights with custom styling and descriptions
+ * 
+ * The layout is responsive and adjusts based on screen size
+ */
 export const CategoryCard: React.FC = () => {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -237,8 +275,7 @@ export const CategoryCard: React.FC = () => {
   
   return (
     <Container maxWidth="lg" sx={{ py: { xs: 3, md: 5 } }}>
-      <Box>
-        {/* Header Section */}
+      <Box>        {/* Header Section - Title and description */}
         <Box sx={{ mb: { xs: 3, md: 5 }, textAlign: 'center' }}>
           <Typography variant="h4" component="h1" fontWeight="bold" gutterBottom>
             Browse Categories
@@ -248,15 +285,15 @@ export const CategoryCard: React.FC = () => {
           </Typography>
         </Box>
         
-        {/* Featured Categories Section */}
+        {/* Featured Categories Section - Shows all available product categories */}
         <Box sx={{ mb: { xs: 4, md: 6 } }}>
           <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>
             Featured Categories
           </Typography>
-          
-          <Grid container spacing={3}>
+            <Grid container spacing={3}>
             {categories.map((category) => (
               <Item item xs={12} sm={6} md={4} key={category.id} sx={{ width: '100%' }}>
+                {/* xs=12 (full width on mobile), sm=6 (50% width on tablets), md=4 (33% width on desktop) */}
                 <CategoryItemCard 
                   image={category.image} 
                   name={category.name}
@@ -270,8 +307,7 @@ export const CategoryCard: React.FC = () => {
             ))}
           </Grid>
         </Box>
-        
-        {/* Seasonal Categories */}
+          {/* Seasonal Categories - Promotions and limited-time offerings */}
         <Box sx={{ mb: { xs: 4, md: 6 } }}>
           <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>
             Seasonal Favorites
@@ -293,8 +329,7 @@ export const CategoryCard: React.FC = () => {
             ))}
           </Grid>
         </Box>
-        
-        {/* Category Highlights */}
+          {/* Category Highlights - Special themed sections with custom background colors */}
         <Box sx={{ mb: { xs: 4, md: 6 } }}>
           <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>
             Category Highlights
