@@ -813,8 +813,8 @@ const App: React.FC = () => {
                     <Route path="/" element={<Home />} />
                     <Route path="/signin" element={<SignIn />} />
                     <Route path="/signup" element={<SignUp />} />
-                    <Route path="/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
-                    <Route path="/ai-cart" element={<PrivateRoute><AICart /></PrivateRoute>} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/ai-cart" element={<AICart />} />
                     <Route path="/order-success" element={<PrivateRoute><OrderSuccess /></PrivateRoute>} />
                     <Route path="/orders" element={<PrivateRoute><Orders /></PrivateRoute>} />
                     <Route path="/categories" element={<CategoryCard />} />
