@@ -409,117 +409,118 @@ const Navigation: React.FC = () => {
               </IconButton>
             </Tooltip>
             
+            {/* Wishlist and Cart Icons - Always visible */}
+            <Tooltip title="Wishlist" arrow>
+              <IconButton 
+                color="inherit" 
+                onClick={() => navigate('/wishlist')}
+                sx={{ 
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    color: 'primary.main',
+                    transform: 'scale(1.1)'
+                  }
+                }}
+              >
+                <Badge badgeContent={0} color="secondary">
+                  <FavoriteIcon />
+                </Badge>
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Cart" arrow>
+              <IconButton 
+                color="inherit" 
+                onClick={() => navigate('/cart')}
+                sx={{ 
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    color: 'primary.main',
+                    transform: 'scale(1.1)'
+                  }
+                }}
+              >
+                <Badge badgeContent={items.length} color="secondary">
+                  <ShoppingCartIcon />
+                </Badge>
+              </IconButton>
+            </Tooltip>
+            
+            {/* User Account Section */}
             {currentUser ? (
-              <>
-                <Tooltip title="Wishlist" arrow>
-                  <IconButton 
-                    color="inherit" 
-                    onClick={() => navigate('/wishlist')}
+              <Box sx={{ ml: 1 }}>
+                <Tooltip title="Account" arrow>
+                  <IconButton
+                    onClick={(e) => setAnchorEl(e.currentTarget)}
                     sx={{ 
                       transition: 'all 0.3s ease',
+                      p: 0.5,
+                      border: '2px solid transparent',
                       '&:hover': {
-                        color: 'primary.main',
-                        transform: 'scale(1.1)'
+                        borderColor: 'primary.light',
+                        transform: 'scale(1.05)'
                       }
                     }}
                   >
-                    <Badge badgeContent={0} color="secondary">
-                      <FavoriteIcon />
-                    </Badge>
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Cart" arrow>
-                  <IconButton 
-                    color="inherit" 
-                    onClick={() => navigate('/cart')}
-                    sx={{ 
-                      transition: 'all 0.3s ease',
-                      '&:hover': {
-                        color: 'primary.main',
-                        transform: 'scale(1.1)'
-                      }
-                    }}
-                  >
-                    <Badge badgeContent={items.length} color="secondary">
-                      <ShoppingCartIcon />
-                    </Badge>
-                  </IconButton>
-                </Tooltip>
-                <Box sx={{ ml: 1 }}>
-                  <Tooltip title="Account" arrow>
-                    <IconButton
-                      onClick={(e) => setAnchorEl(e.currentTarget)}
+                    <Avatar 
                       sx={{ 
-                        transition: 'all 0.3s ease',
-                        p: 0.5,
-                        border: '2px solid transparent',
-                        '&:hover': {
-                          borderColor: 'primary.light',
-                          transform: 'scale(1.05)'
-                        }
+                        width: 35, 
+                        height: 35, 
+                        bgcolor: 'primary.main',
+                        fontWeight: 'bold'
                       }}
                     >
-                      <Avatar 
-                        sx={{ 
-                          width: 35, 
-                          height: 35, 
-                          bgcolor: 'primary.main',
-                          fontWeight: 'bold'
-                        }}
-                      >
-                        {currentUser.email?.[0].toUpperCase()}
-                      </Avatar>
-                    </IconButton>
-                  </Tooltip>
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={() => setAnchorEl(null)}
-                    TransitionComponent={Fade}
-                    PaperProps={{
-                      elevation: 3,
-                      sx: {
-                        mt: 1.5,
-                        overflow: 'visible',
-                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.15))',
-                        '&:before': {
-                          content: '""',
-                          display: 'block',
-                          position: 'absolute',
-                          top: 0,
-                          right: 14,
-                          width: 10,
-                          height: 10,
-                          bgcolor: 'background.paper',
-                          transform: 'translateY(-50%) rotate(45deg)',
-                          zIndex: 0,
-                        },
+                      {currentUser.email?.[0].toUpperCase()}
+                    </Avatar>
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={() => setAnchorEl(null)}
+                  TransitionComponent={Fade}
+                  PaperProps={{
+                    elevation: 3,
+                    sx: {
+                      mt: 1.5,
+                      overflow: 'visible',
+                      filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.15))',
+                      '&:before': {
+                        content: '""',
+                        display: 'block',
+                        position: 'absolute',
+                        top: 0,
+                        right: 14,
+                        width: 10,
+                        height: 10,
+                        bgcolor: 'background.paper',
+                        transform: 'translateY(-50%) rotate(45deg)',
+                        zIndex: 0,
                       },
-                    }}
-                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                  >
-                    <MenuItem onClick={() => { 
-                      navigate('/profile');
-                      setAnchorEl(null);
-                    }}>
-                      Profile
-                    </MenuItem>
-                    <MenuItem onClick={() => { 
-                      navigate('/orders');
-                      setAnchorEl(null);
-                    }}>
-                      My Orders
-                    </MenuItem>
-                    <MenuItem onClick={() => {
-                      handleLogout();
-                      setAnchorEl(null);
-                    }}>
-                      Logout
-                    </MenuItem>
-                  </Menu>
-                </Box>
-              </>
+                    },
+                  }}
+                  transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                  anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                >
+                  <MenuItem onClick={() => { 
+                    navigate('/profile');
+                    setAnchorEl(null);
+                  }}>
+                    Profile
+                  </MenuItem>
+                  <MenuItem onClick={() => { 
+                    navigate('/orders');
+                    setAnchorEl(null);
+                  }}>
+                    My Orders
+                  </MenuItem>
+                  <MenuItem onClick={() => {
+                    handleLogout();
+                    setAnchorEl(null);
+                  }}>
+                    Logout
+                  </MenuItem>
+                </Menu>
+              </Box>
             ) : (
               <>
                 <Button 
@@ -527,6 +528,7 @@ const Navigation: React.FC = () => {
                   variant="outlined"
                   onClick={() => navigate('/signin')}
                   sx={{ 
+                    ml: 1,
                     display: { xs: 'none', sm: 'flex' },
                     fontWeight: 'medium',
                     transition: 'all 0.3s ease',
@@ -672,6 +674,26 @@ const Navigation: React.FC = () => {
         
         <Divider sx={{ my: 2 }} />
         
+        {/* Cart - Always visible */}
+        <List sx={{ px: 1 }}>
+          <ListItem 
+            component="div"
+            onClick={() => navigateTo('/cart')}
+            sx={{ 
+              borderRadius: 2, 
+              mb: 0.5,
+              '&:hover': { bgcolor: 'rgba(46, 125, 50, 0.08)' } 
+            }}
+          >
+            <ListItemIcon sx={{ minWidth: 40, color: 'primary.main' }}>
+              <Badge badgeContent={items.length} color="secondary">
+                <ShoppingCartIcon />
+              </Badge>
+            </ListItemIcon>
+            <ListItemText primary="My Cart" />
+          </ListItem>
+        </List>
+        
         {currentUser ? (
           <List sx={{ px: 1 }}>
             <ListItem 
@@ -702,23 +724,6 @@ const Navigation: React.FC = () => {
                 <OrdersIcon />
               </ListItemIcon>
               <ListItemText primary="My Orders" />
-            </ListItem>
-            
-            <ListItem 
-              component="div"
-              onClick={() => navigateTo('/cart')}
-              sx={{ 
-                borderRadius: 2, 
-                mb: 0.5,
-                '&:hover': { bgcolor: 'rgba(46, 125, 50, 0.08)' } 
-              }}
-            >
-              <ListItemIcon sx={{ minWidth: 40, color: 'primary.main' }}>
-                <Badge badgeContent={items.length} color="secondary">
-                  <ShoppingCartIcon />
-                </Badge>
-              </ListItemIcon>
-              <ListItemText primary="My Cart" />
             </ListItem>
             
             <ListItem 

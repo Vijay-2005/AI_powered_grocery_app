@@ -147,8 +147,9 @@ export const AICart: React.FC = () => {
   };
 
   const getIngredientImageUrl = (ingredient: string) => {
-    // Using a single reliable default image for all AI-generated ingredients
-    return 'https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80';
+    // Instead of returning an image URL, we'll return an empty string
+    // and handle the rendering with an icon instead of an image
+    return '';
   };
 
   return (
@@ -398,15 +399,13 @@ export const AICart: React.FC = () => {
                           overflow: 'hidden',
                           flexShrink: 0,
                           bgcolor: 'primary.light',
-                          mr: 2
+                          mr: 2,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
                         }}
                       >
-                        <CardMedia
-                          component="img"
-                          image={getIngredientImageUrl(ingredient)}
-                          alt={ingredient}
-                          sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                        />
+                                                <RestaurantIcon sx={{ color: 'white', fontSize: '1.8rem' }} />
                       </Box>
                       
                       <Typography sx={{ flexGrow: 1 }}>

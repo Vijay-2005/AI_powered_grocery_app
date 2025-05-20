@@ -11,6 +11,7 @@ import {
   Paper,
   Avatar,
   Chip,
+  Alert,
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -19,12 +20,18 @@ import {
   ShoppingBag as ShoppingBagIcon,
   LocalMall as LocalMallIcon,
   LocalShipping as LocalShippingIcon,
+  Login as LoginIcon,
+  Person as PersonIcon,
 } from '@mui/icons-material';
 import { useCart } from '../contexts/CartContext';
+import { useAuth } from '../contexts/AuthContext';
 import { Payment } from './Payment';
+import { useNavigate } from 'react-router-dom';
 
 export const Cart: React.FC = () => {
   const { state: { items }, dispatch } = useCart();
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
 
   const handleUpdateQuantity = (id: string, change: number) => {
     dispatch({
@@ -389,45 +396,93 @@ export const Cart: React.FC = () => {
               </Typography>
             </Box>
 
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              size="large"
-              onClick={() => {
-                // Focus on payment container
-                const paymentContainer = document.getElementById('payment-container');
-                if (paymentContainer) {
-                  paymentContainer.style.display = 'block';
-                  paymentContainer.scrollIntoView({ behavior: 'smooth' });
-                }
-                
-                // Focus on the UPI input field if it exists
-                setTimeout(() => {
-                  const upiInput = document.querySelector('input[placeholder="yourname@upi"]') as HTMLInputElement;
-                  if (upiInput) {
-                    upiInput.focus();
+            {!currentUser ? (
+              <>
+                <Alert 
+                  severity="info" 
+                  sx={{ mb: 2, borderRadius: 2 }}
+                >
+                  Please sign in or create an account to proceed with your order.
+                </Alert>
+                <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    fullWidth
+                    startIcon={<LoginIcon />}
+                    onClick={() => navigate('/signin')}
+                    sx={{ 
+                      py: 1.5, 
+                      borderRadius: 8,
+                      fontWeight: 'bold',
+                      fontSize: '1rem',
+                      textTransform: 'none'
+                    }}
+                  >
+                    Sign In
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    fullWidth
+                    startIcon={<PersonIcon />}
+                    onClick={() => navigate('/signup')}
+                    sx={{ 
+                      py: 1.5, 
+                      borderRadius: 8,
+                      fontWeight: 'bold',
+                      fontSize: '1rem',
+                      textTransform: 'none',
+                      boxShadow: '0 4px 10px rgba(255, 152, 0, 0.3)'
+                    }}
+                  >
+                    Sign Up
+                  </Button>
+                </Box>
+              </>
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                size="large"
+                onClick={() => {
+                  // Focus on payment container
+                  const paymentContainer = document.getElementById('payment-container');
+                  if (paymentContainer) {
+                    paymentContainer.style.display = 'block';
+                    paymentContainer.scrollIntoView({ behavior: 'smooth' });
                   }
-                }, 500);
-              }}
-              sx={{ 
-                py: 1.8, 
-                borderRadius: 8,
-                fontWeight: 'bold',
-                fontSize: '1.1rem',
-                textTransform: 'none',
-                boxShadow: '0 4px 10px rgba(46, 125, 50, 0.3)'
-              }}
-            >
-              Proceed to Checkout
-            </Button>
+                  
+                  // Focus on the UPI input field if it exists
+                  setTimeout(() => {
+                    const upiInput = document.querySelector('input[placeholder="yourname@upi"]') as HTMLInputElement;
+                    if (upiInput) {
+                      upiInput.focus();
+                    }
+                  }, 500);
+                }}
+                sx={{ 
+                  py: 1.8, 
+                  borderRadius: 8,
+                  fontWeight: 'bold',
+                  fontSize: '1.1rem',
+                  textTransform: 'none',
+                  boxShadow: '0 4px 10px rgba(46, 125, 50, 0.3)'
+                }}
+              >
+                Proceed to Checkout
+              </Button>
+            )}
             
-            <Box id="payment-container" sx={{ mt: 3, display: 'block' }}>
-              <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 2 }}>
-                Payment Method
-              </Typography>
-              <Payment />
-            </Box>
+            {currentUser && (
+              <Box id="payment-container" sx={{ mt: 3, display: 'block' }}>
+                <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 2 }}>
+                  Payment Method
+                </Typography>
+                <Payment />
+              </Box>
+            )}
           </Paper>
         </Box>
       </Box>
